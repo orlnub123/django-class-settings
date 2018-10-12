@@ -21,6 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Utilities"
 ]
+packages = [{include = "class_settings"}]
 
 [tool.poetry.dependencies]
 python = "^3.4"
