@@ -1,9 +1,9 @@
-import importlib
 import os
+import sys
 
-from django.conf import global_settings, settings
+from django.conf import global_settings
 
-from .utils import _patch_settings_setup
+from .importers import SettingsImporter
 
 
 class Options:
@@ -26,12 +26,10 @@ class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assig
 Settings.__class__ = SettingsMeta
 
 
-@_patch_settings_setup  # Needed for manage.py --settings support
 def setup():
-    module_path = os.environ["DJANGO_SETTINGS_MODULE"]
-    if ":" in module_path:
-        module_path, cls_path = module_path.split(":", maxsplit=1)
-    else:
-        cls_path = os.environ["DJANGO_SETTINGS_CLASS"]
-    cls = getattr(importlib.import_module(module_path), cls_path)
-    settings.configure(cls())
+    settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
+    settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
+    os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
+        settings_module, settings_class
+    )
+    sys.meta_path.append(SettingsImporter())
