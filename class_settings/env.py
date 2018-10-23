@@ -1,3 +1,4 @@
+import contextlib
 import functools
 import os
 
@@ -14,6 +15,7 @@ missing = Missing()
 
 class Env:
     def __init__(self):
+        self._prefix = None
         self._parsers = {}
         # Populate with default parsers
         for name in dir(parsers):
@@ -24,16 +26,27 @@ class Env:
     def __call__(self, name=None, *, prefix=None, default=missing):
         if name is None:
             return LazyEnv(prefix, default)
-        env_name = prefix + name if prefix is not None else name
+        prefix = prefix if prefix is not None else self._prefix
+        name = prefix + name if prefix is not None else name
         if default is not missing:
-            return os.environ.get(env_name, default)
-        return os.environ[env_name]
+            return os.environ.get(name, default)
+        return os.environ[name]
 
     def __getattr__(self, name):
         try:
             return self._parsers[name]
         except KeyError:
             raise AttributeError
+
+    @contextlib.contextmanager
+    def prefixed(self, prefix):
+        old_prefix = self._prefix
+        if old_prefix is None:
+            self._prefix = prefix
+        else:
+            self._prefix += prefix
+        yield
+        self._prefix = old_prefix
 
     def parser(self, _func=None, *, name=None):
         def decorator(func):
