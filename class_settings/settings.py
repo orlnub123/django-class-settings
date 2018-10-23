@@ -3,6 +3,7 @@ import sys
 
 from django.conf import global_settings
 
+from .env import LazyEnv
 from .importers import SettingsImporter
 
 
@@ -11,7 +12,17 @@ class Options:
         self.default_settings = getattr(meta, "default_settings", global_settings)
 
 
+class SettingsDict(dict):
+    def __setitem__(self, key, value):
+        if isinstance(value, LazyEnv):
+            value = value(key)
+        super().__setitem__(key, value)
+
+
 class SettingsMeta(type):
+    def __prepare__(name, bases):
+        return SettingsDict()
+
     def __init__(cls, name, bases, namespace):
         meta = getattr(cls, "Meta", None)
         cls._meta = Options(meta)
