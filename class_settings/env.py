@@ -22,13 +22,12 @@ class Env:
                 self.parser(parser)
 
     def __call__(self, name=None, *, prefix=None, default=missing):
-        if name is not None and prefix is not None:
-            raise TypeError
         if name is None:
             return LazyEnv(prefix, default)
+        env_name = prefix + name if prefix is not None else name
         if default is not missing:
-            return os.environ.get(name, default)
-        return os.environ[name]
+            return os.environ.get(env_name, default)
+        return os.environ[env_name]
 
     def __getattr__(self, name):
         try:
@@ -60,9 +59,8 @@ class LazyEnv:
         self.default = default
         self.parser = None
 
-    def __call__(self, key):
-        name = self.prefix + key if self.prefix is not None else key
-        value = env(name, default=self.default)
+    def __call__(self, name):
+        value = env(name, prefix=self.prefix, default=self.default)
         return self.parser(value) if self.parser is not None else value
 
 
