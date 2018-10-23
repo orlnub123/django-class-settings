@@ -59,7 +59,7 @@ class Env:
                         return default
                     raise
                 if isinstance(value, LazyEnv):
-                    value.parser = functools.partial(func, **kwargs)
+                    value.parser = functools.partial(parser, **kwargs)
                 else:
                     value = func(value, **kwargs)
                 return value
@@ -78,13 +78,10 @@ class LazyEnv:
         self.parser = None
 
     def __call__(self, name):
-        try:
-            value = env(name, prefix=self.prefix)
-        except KeyError:
-            if self.default is not missing:
-                return self.default
-            raise
-        return self.parser(value) if self.parser is not None else value
+        if self.parser is not None:
+            return self.parser(name, prefix=self.prefix, default=self.default)
+        else:
+            return env(name, prefix=self.prefix, default=self.default)
 
 
 env = Env()
