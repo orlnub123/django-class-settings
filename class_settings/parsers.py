@@ -16,8 +16,8 @@ def bool(value):
         raise ValueError
 
 
-def int(value):
-    return builtins.int(value)
+def int(value, base=10):
+    return builtins.int(value, base)
 
 
 def float(value):
