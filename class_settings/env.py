@@ -52,7 +52,12 @@ class Env:
         def decorator(func):
             @functools.wraps(func)
             def parser(name=None, *, prefix=None, default=missing, **kwargs):
-                value = env(name, prefix=prefix, default=default)
+                try:
+                    value = env(name, prefix=prefix)
+                except KeyError:
+                    if default is not missing:
+                        return default
+                    raise
                 if isinstance(value, LazyEnv):
                     value.parser = functools.partial(func, **kwargs)
                 else:
@@ -73,7 +78,12 @@ class LazyEnv:
         self.parser = None
 
     def __call__(self, name):
-        value = env(name, prefix=self.prefix, default=self.default)
+        try:
+            value = env(name, prefix=self.prefix)
+        except KeyError:
+            if self.default is not missing:
+                return self.default
+            raise
         return self.parser(value) if self.parser is not None else value
 
 
