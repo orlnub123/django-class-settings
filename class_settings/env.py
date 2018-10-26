@@ -25,7 +25,7 @@ class Env:
 
     def __call__(self, name=None, *, prefix=None, default=missing):
         if name is None:
-            return LazyEnv(prefix, default)
+            return LazyEnv(self, prefix=prefix, default=default)
         prefix = prefix if prefix is not None else self._prefix
         name = prefix + name if prefix is not None else name
         if default is not missing:
@@ -53,7 +53,7 @@ class Env:
             @functools.wraps(func)
             def parser(name=None, *, prefix=None, default=missing, **kwargs):
                 try:
-                    value = env(name, prefix=prefix)
+                    value = self(name, prefix=prefix)
                 except KeyError:
                     if default is not missing:
                         return default
@@ -72,7 +72,8 @@ class Env:
 
 
 class LazyEnv:
-    def __init__(self, prefix, default=missing):
+    def __init__(self, env, *, prefix=None, default=missing):
+        self.env = env
         self.prefix = prefix
         self.default = default
         self.parser = None
@@ -81,7 +82,7 @@ class LazyEnv:
         if self.parser is not None:
             return self.parser(name, prefix=self.prefix, default=self.default)
         else:
-            return env(name, prefix=self.prefix, default=self.default)
+            return self.env(name, prefix=self.prefix, default=self.default)
 
 
 env = Env()
