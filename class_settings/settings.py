@@ -15,7 +15,7 @@ class Options:
 class SettingsDict(dict):
     def __setitem__(self, key, value):
         if isinstance(value, DeferredEnv):
-            value = value(key)
+            value = value._parse(key)
         super().__setitem__(key, value)
 
 

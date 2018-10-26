@@ -73,16 +73,16 @@ class Env:
 
 class DeferredEnv:
     def __init__(self, env, *, prefix=None, default=missing):
-        self.env = env
-        self.prefix = prefix
-        self.default = default
-        self.parser = None
+        self._env = env
+        self._prefix = prefix
+        self._default = default
+        self._parser = None
 
-    def __call__(self, name):
-        if self.parser is not None:
-            return self.parser(name, prefix=self.prefix, default=self.default)
+    def _parse(self, name):
+        if self._parser is not None:
+            return self._parser(name, prefix=self._prefix, default=self._default)
         else:
-            return self.env(name, prefix=self.prefix, default=self.default)
+            return self._env(name, prefix=self._prefix, default=self._default)
 
 
 env = Env()
