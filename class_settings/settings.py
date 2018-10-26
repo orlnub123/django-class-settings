@@ -3,7 +3,7 @@ import sys
 
 from django.conf import global_settings
 
-from .env import LazyEnv
+from .env import DeferredEnv
 from .importers import SettingsImporter
 
 
@@ -14,7 +14,7 @@ class Options:
 
 class SettingsDict(dict):
     def __setitem__(self, key, value):
-        if isinstance(value, LazyEnv):
+        if isinstance(value, DeferredEnv):
             value = value(key)
         super().__setitem__(key, value)
 

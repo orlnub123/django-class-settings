@@ -25,7 +25,7 @@ class Env:
 
     def __call__(self, name=None, *, prefix=None, default=missing):
         if name is None:
-            return LazyEnv(self, prefix=prefix, default=default)
+            return DeferredEnv(self, prefix=prefix, default=default)
         prefix = prefix if prefix is not None else self._prefix
         name = prefix + name if prefix is not None else name
         if default is not missing:
@@ -58,7 +58,7 @@ class Env:
                     if default is not missing:
                         return default
                     raise
-                if isinstance(value, LazyEnv):
+                if isinstance(value, DeferredEnv):
                     value.parser = functools.partial(parser, **kwargs)
                 else:
                     value = func(value, **kwargs)
@@ -71,7 +71,7 @@ class Env:
         return decorator if _func is None else decorator(_func)
 
 
-class LazyEnv:
+class DeferredEnv:
     def __init__(self, env, *, prefix=None, default=missing):
         self.env = env
         self.prefix = prefix
