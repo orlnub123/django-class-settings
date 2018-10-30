@@ -12,6 +12,11 @@ def setup():
     from .importers import SettingsImporter
     from .utils import patch_settings_setup
 
+    global _setup
+    if _setup:
+        return
+    _setup = True
+
     @patch_settings_setup  # Needed for manage.py --settings support
     def settings_setup():
         module_path = os.environ["DJANGO_SETTINGS_MODULE"]
@@ -28,3 +33,6 @@ def setup():
         settings_module, settings_class
     )
     sys.meta_path.append(SettingsImporter())
+
+
+_setup = False
