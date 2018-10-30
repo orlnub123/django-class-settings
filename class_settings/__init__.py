@@ -16,7 +16,11 @@ def setup():
     def settings_setup():
         module_path = os.environ["DJANGO_SETTINGS_MODULE"]
         module = importlib.import_module(module_path)
+        # Allow configure to error on multiple calls
         settings.configure(module, SETTINGS_MODULE=module_path)
+        wrapped = settings._wrapped
+        settings._setup()
+        settings._wrapped = wrapped
 
     settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
     settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
