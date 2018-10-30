@@ -5,13 +5,13 @@ import types
 class SettingsModule(types.ModuleType):
     def __init__(self, name, cls):
         super().__init__(name, cls.__doc__)
-        self.cls = cls
+        self.SETTINGS_CLASS = cls
 
     def __dir__(self):
-        return set(super().__dir__() + dir(self.cls))
+        return set(super().__dir__() + dir(self.SETTINGS_CLASS))
 
     def __getattr__(self, name):
-        return getattr(self.cls, name)
+        return getattr(self.SETTINGS_CLASS, name)
 
 
 class SettingsImporter:
