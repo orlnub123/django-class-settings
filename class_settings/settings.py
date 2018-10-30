@@ -1,5 +1,10 @@
+import __future__
+
+import ast
+import inspect
 import os
 import sys
+import tokenize
 
 from django.conf import global_settings
 
@@ -10,6 +15,7 @@ from .importers import SettingsImporter
 class Options:
     def __init__(self, meta):
         self.default_settings = getattr(meta, "default_settings", global_settings)
+        self.env_prefix = getattr(meta, "env_prefix", "DJANGO_")
 
 
 class SettingsDict(dict):
@@ -21,11 +27,44 @@ class SettingsDict(dict):
 
 class SettingsMeta(type):
     def __prepare__(name, bases):
-        return SettingsDict()
+        frame = sys._getframe(1)
+        filename = inspect.getsourcefile(frame)
+        with tokenize.open(filename) as file:
+            lines = file.readlines()[frame.f_lineno - 1 :]
+        source = "".join(inspect.getblock(lines))
 
-    def __init__(cls, name, bases, namespace):
-        meta = getattr(cls, "Meta", None)
-        cls._meta = Options(meta)
+        cls_node = ast.parse(source).body[0]
+        for node in reversed(list(ast.iter_child_nodes(cls_node))):
+            if isinstance(node, ast.ClassDef) and node.name == "Meta":
+                cf_mask = sum(
+                    getattr(__future__, feature).compiler_flag
+                    for feature in __future__.all_feature_names
+                )
+                code = compile(
+                    ast.Module(body=[node]),
+                    filename="<meta>",
+                    mode="exec",
+                    flags=frame.f_code.co_flags & cf_mask,
+                    dont_inherit=True,
+                )
+                globals = frame.f_globals
+                locals = {}
+                exec(code, globals, locals)
+                meta = locals["Meta"]
+                break
+        else:
+            for base in bases:
+                if hasattr(base, "Meta"):
+                    meta = base.Meta
+                    break
+            else:
+                meta = None
+        return SettingsDict(__meta__=Options(meta))
+
+    def __new__(meta, name, bases, namespace):
+        options = namespace.pop("__meta__")
+        namespace["_meta"] = options
+        return super().__new__(meta, name, bases, namespace)
 
 
 class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assignment
