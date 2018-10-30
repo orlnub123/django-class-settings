@@ -59,6 +59,10 @@ class SettingsMeta(type):
 
 
 class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assignment
+    def __dir__(self):
+        default_settings = self._meta.default_settings
+        return set(super().__dir__() + dir(default_settings))
+
     def __getattr__(self, name):
         default_settings = self._meta.default_settings
         return getattr(default_settings, name)
