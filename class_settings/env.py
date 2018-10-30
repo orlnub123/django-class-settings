@@ -4,7 +4,7 @@ import os
 import sys
 
 from . import parsers
-from .settings import Options
+from .options import Options
 
 
 class Missing:
