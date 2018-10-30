@@ -67,5 +67,8 @@ class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assig
         default_settings = self._meta.default_settings
         return getattr(default_settings, name)
 
+    def is_overridden(self, setting):
+        return setting in vars(self)
+
 
 Settings.__class__ = SettingsMeta
