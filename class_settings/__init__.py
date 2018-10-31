@@ -27,11 +27,13 @@ def setup():
         settings._setup()
         settings._wrapped = wrapped
 
-    settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
-    settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
-    os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
-        settings_module, settings_class
-    )
+    # Prevent DJANGO_SETTINGS_MODULE getting mutated twice via the autoreloader
+    if os.environ.get("RUN_MAIN") != "true":
+        settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
+        settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
+        os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
+            settings_module, settings_class
+        )
     sys.meta_path.append(SettingsImporter())
 
 
