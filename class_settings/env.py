@@ -28,18 +28,26 @@ class Env:
                 self.parser(parser)
 
     def __call__(self, name=None, *, prefix=None, default=missing):
+        frame = sys._getframe(1)
+        while frame is not None:
+            options = frame.f_locals.get("__meta__")
+            if isinstance(options, Options):
+                break
+            frame = frame.f_back
+        else:
+            options = None
+
         if name is None:
+            if options is None:
+                raise TypeError("'name' is required outside of Settings classes")
             return DeferredEnv(self, prefix=prefix, default=default)
-        prefix = prefix if prefix is not None else self._prefix
-        # Attempt to get default prefix from the class meta
-        if prefix is None:
-            frame = sys._getframe(1)
-            while frame is not None:
-                options = frame.f_locals.get("__meta__")
-                if isinstance(options, Options):
-                    prefix = options.env_prefix
-                    break
-                frame = frame.f_back
+        prefix = (
+            prefix
+            if prefix is not None
+            else self._prefix
+            if self._prefix is not None
+            else options.env_prefix
+        )
         name = prefix + name if prefix is not None else name
         if default is not missing:
             return os.environ.get(name, default)
