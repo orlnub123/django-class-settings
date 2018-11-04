@@ -75,7 +75,7 @@ class Env:
         yield
         self._prefix = old_prefix
 
-    def parser(self, _func=None, *, name=None):
+    def parser(self, _func=None, *, name=None, parse_default=False):
         def decorator(func):
             @functools.wraps(func)
             def parser(name=None, *, prefix=None, default=missing, **kwargs):
@@ -83,6 +83,8 @@ class Env:
                     value = self(name, prefix=prefix)
                 except ImproperlyConfigured:
                     if default is not missing:
+                        if parse_default:
+                            default = func(default)
                         return default
                     raise
                 if isinstance(value, DeferredEnv):
