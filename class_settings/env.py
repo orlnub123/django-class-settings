@@ -32,14 +32,12 @@ class Env:
         # Attempt to get default prefix from the class meta
         if prefix is None:
             frame = sys._getframe(1)
-            while True:
+            while frame is not None:
                 options = frame.f_locals.get("__meta__")
                 if isinstance(options, Options):
                     prefix = options.env_prefix
                     break
                 frame = frame.f_back
-                if frame is None:
-                    break
         name = prefix + name if prefix is not None else name
         if default is not missing:
             return os.environ.get(name, default)
