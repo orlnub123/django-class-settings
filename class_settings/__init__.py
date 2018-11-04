@@ -16,17 +16,6 @@ def setup():
     global _setup
     if _setup:
         return
-    _setup = True
-
-    @patch_settings_setup  # Needed for manage.py --settings support
-    def settings_setup():
-        module_path = os.environ["DJANGO_SETTINGS_MODULE"]
-        module = importlib.import_module(module_path)
-        # Allow configure to error on multiple calls
-        settings.configure(module, SETTINGS_MODULE=module_path)
-        wrapped = settings._wrapped
-        settings._setup()
-        settings._wrapped = wrapped
 
     # Prevent DJANGO_SETTINGS_MODULE getting mutated twice via the autoreloader
     if os.environ.get("RUN_MAIN") != "true":
@@ -42,6 +31,18 @@ def setup():
             settings_module, settings_class
         )
     sys.meta_path.append(SettingsImporter())
+
+    @patch_settings_setup  # Needed for manage.py --settings support
+    def settings_setup():
+        module_path = os.environ["DJANGO_SETTINGS_MODULE"]
+        module = importlib.import_module(module_path)
+        # Allow configure to error on multiple calls
+        settings.configure(module, SETTINGS_MODULE=module_path)
+        wrapped = settings._wrapped
+        settings._setup()
+        settings._wrapped = wrapped
+
+    _setup = True
 
 
 _setup = False
