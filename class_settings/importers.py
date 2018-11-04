@@ -1,6 +1,8 @@
 import importlib.machinery
 import types
 
+from django.core.exceptions import ImproperlyConfigured
+
 
 class SettingsModule(types.ModuleType):
     def __init__(self, name, cls):
@@ -24,7 +26,11 @@ class SettingsImporter:
     def create_module(self, spec):
         settings_module, settings_class = spec.name.rsplit(":", maxsplit=1)
         module = importlib.import_module(settings_module)
-        cls = getattr(module, settings_class)
+        # manage.py only catches ImproperlyConfigured and ImportError
+        try:
+            cls = getattr(module, settings_class)
+        except AttributeError as error:
+            raise ImproperlyConfigured(error)
         return SettingsModule(spec.name, cls())
 
     def exec_module(self, module):
