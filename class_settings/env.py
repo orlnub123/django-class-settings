@@ -3,6 +3,8 @@ import functools
 import os
 import sys
 
+from django.core.exceptions import ImproperlyConfigured
+
 from . import parsers
 from .options import Options
 
@@ -41,13 +43,19 @@ class Env:
         name = prefix + name if prefix is not None else name
         if default is not missing:
             return os.environ.get(name, default)
-        return os.environ[name]
+        try:
+            return os.environ[name]
+        except KeyError:
+            raise ImproperlyConfigured("Environment variable {!r} not set".format(name))
 
     def __getattr__(self, name):
         try:
             return self._parsers[name]
         except KeyError:
-            raise AttributeError
+            cls_name = type(self).__name__
+            raise AttributeError(
+                "{!r} object has no attribute {!r}".format(cls_name, name)
+            )
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
@@ -65,7 +73,7 @@ class Env:
             def parser(name=None, *, prefix=None, default=missing, **kwargs):
                 try:
                     value = self(name, prefix=prefix)
-                except KeyError:
+                except ImproperlyConfigured:
                     if default is not missing:
                         return default
                     raise

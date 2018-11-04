@@ -53,7 +53,9 @@ class SettingsMeta(type):
         return SettingsDict(__meta__=Options(meta))
 
     def __new__(meta, name, bases, namespace):
-        options = namespace.pop("__meta__")
+        options = namespace.pop("__meta__", None)
+        if not isinstance(options, Options):
+            raise RuntimeError("__meta__ is not an Options object")
         namespace["_meta"] = options
         return super().__new__(meta, name, bases, namespace)
 

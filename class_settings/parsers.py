@@ -7,13 +7,12 @@ def str(value):
 
 
 def bool(value):
-    value = value.lower()
-    if value in ["true", "t", "1", "yes", "y"]:
+    if value.lower() in ["true", "t", "1", "yes", "y"]:
         return True
-    elif value in ["false", "f", "0", "no", "n"]:
+    elif value.lower() in ["false", "f", "0", "no", "n"]:
         return False
     else:
-        raise ValueError
+        raise ValueError("Could not convert {!r} to bool".format(value))
 
 
 def int(value, base=10):

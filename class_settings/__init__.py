@@ -9,6 +9,7 @@ def setup():
     import os
     import sys
     from django.conf import settings
+    from django.core.exceptions import ImproperlyConfigured
     from .importers import SettingsImporter
     from .utils import patch_settings_setup
 
@@ -29,8 +30,14 @@ def setup():
 
     # Prevent DJANGO_SETTINGS_MODULE getting mutated twice via the autoreloader
     if os.environ.get("RUN_MAIN") != "true":
-        settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
-        settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
+        try:
+            settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
+            settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
+        except KeyError as error:
+            raise ImproperlyConfigured(
+                "Settings could not be setup. The environment variable {!r} "
+                "is not defined.".format(error.args[0])
+            )
         os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
             settings_module, settings_class
         )
