@@ -36,11 +36,15 @@ def setup():
     def settings_setup():
         module_path = os.environ["DJANGO_SETTINGS_MODULE"]
         module = importlib.import_module(module_path)
-        # Allow configure to error on multiple calls
+        # Prevent manage.py from swallowing exceptions arising from
+        # settings._setup and make sure to call settings.configure first to
+        # allow it to error on multiple calls.
+        old = settings._wrapped
         settings.configure(module, SETTINGS_MODULE=module_path)
-        wrapped = settings._wrapped
+        new = settings._wrapped
+        settings._wrapped = old
         settings._setup()
-        settings._wrapped = wrapped
+        settings._wrapped = new
 
     _setup = True
 
