@@ -7,9 +7,9 @@ def str(value):
 
 
 def bool(value):
-    if value.lower() in ["true", "t", "1", "yes", "y"]:
+    if value.lower() in ["true", "t", "yes", "y", "on", "1"]:
         return True
-    elif value.lower() in ["false", "f", "0", "no", "n"]:
+    elif value.lower() in ["false", "f", "no", "n", "off", "0"]:
         return False
     else:
         raise ValueError("Could not convert {!r} to bool".format(value))
