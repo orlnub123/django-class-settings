@@ -84,7 +84,7 @@ class Env:
                 except ImproperlyConfigured:
                     if default is not missing:
                         if parse_default:
-                            default = func(default)
+                            default = func(default, **kwargs)
                         return default
                     raise
                 if isinstance(value, DeferredEnv):
