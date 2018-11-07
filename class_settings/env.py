@@ -22,10 +22,9 @@ class Env:
         self._prefix = None
         self._parsers = {}
         # Populate with default parsers
-        for name in dir(parsers):
+        for name, parser in vars(parsers).items():
             if name.startswith("_"):
                 continue
-            parser = getattr(parsers, name)
             if callable(parser):
                 self.parser(parser)
 
