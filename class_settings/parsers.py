@@ -1,6 +1,5 @@
 import builtins
 import functools
-import json as json_
 
 
 def _get_parser(parser):
@@ -26,16 +25,9 @@ def _sequence_parser(type):
 # Numeric types
 
 
-def int(value, base=10):
-    return builtins.int(value, base)
-
-
-def float(value):
-    return builtins.float(value)
-
-
-def complex(value):
-    return builtins.complex(value)
+int = int
+float = float
+complex = complex
 
 
 # Sequence types
@@ -48,19 +40,14 @@ tuple = _sequence_parser(tuple)
 # Text sequence types
 
 
-def str(value):
-    return value
+str = str
 
 
 # Binary sequence types
 
 
-def bytes(value, encoding, errors="strict"):
-    return builtins.bytes(value, encoding, errors)
-
-
-def bytearray(value, encoding, errors="strict"):
-    return builtins.bytearray(value, encoding, errors)
+bytes = bytes
+bytearray = bytearray
 
 
 # Set types
@@ -103,4 +90,6 @@ def bool(value):
 
 
 def json(value):
-    return json_.loads(value)
+    import json
+
+    return json.loads(value)
