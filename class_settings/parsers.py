@@ -23,25 +23,7 @@ def _sequence_parser(type):
     return parser
 
 
-def str(value):
-    return value
-
-
-def bytes(value, encoding, errors="strict"):
-    return builtins.bytes(value, encoding, errors)
-
-
-def bytearray(value, encoding, errors="strict"):
-    return builtins.bytearray(value, encoding, errors)
-
-
-def bool(value):
-    if value.lower() in ["true", "t", "yes", "y", "on", "1"]:
-        return True
-    elif value.lower() in ["false", "f", "no", "n", "off", "0"]:
-        return False
-    else:
-        raise ValueError("Could not convert {!r} to bool".format(value))
+# Numeric types
 
 
 def int(value, base=10):
@@ -56,10 +38,39 @@ def complex(value):
     return builtins.complex(value)
 
 
+# Sequence types
+
+
 list = _sequence_parser(list)
 tuple = _sequence_parser(tuple)
+
+
+# Text sequence types
+
+
+def str(value):
+    return value
+
+
+# Binary sequence types
+
+
+def bytes(value, encoding, errors="strict"):
+    return builtins.bytes(value, encoding, errors)
+
+
+def bytearray(value, encoding, errors="strict"):
+    return builtins.bytearray(value, encoding, errors)
+
+
+# Set types
+
+
 set = _sequence_parser(set)
 frozenset = _sequence_parser(frozenset)
+
+
+# Mapping types
 
 
 def dict(value, separator=",", itemseparator="=", keyparser=None, valueparser=None):
@@ -74,6 +85,21 @@ def dict(value, separator=",", itemseparator="=", keyparser=None, valueparser=No
         valueparser = _get_parser(valueparser)
         values = map(valueparser, values)
     return builtins.dict(zip(keys, values))
+
+
+# Other types
+
+
+def bool(value):
+    if value.lower() in ["true", "t", "yes", "y", "on", "1"]:
+        return True
+    elif value.lower() in ["false", "f", "no", "n", "off", "0"]:
+        return False
+    else:
+        raise ValueError("Could not convert {!r} to bool".format(value))
+
+
+# Custom
 
 
 def json(value):
