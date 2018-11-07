@@ -88,7 +88,7 @@ class Env:
                         return default
                     raise
                 if isinstance(value, DeferredEnv):
-                    value.parser = functools.partial(parser, **kwargs)
+                    value._parser = functools.partial(parser, **kwargs)
                 else:
                     value = func(value, **kwargs)
                 return value
