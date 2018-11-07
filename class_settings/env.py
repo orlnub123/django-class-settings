@@ -23,6 +23,8 @@ class Env:
         self._parsers = {}
         # Populate with default parsers
         for name in dir(parsers):
+            if name.startswith("_"):
+                continue
             parser = getattr(parsers, name)
             if callable(parser):
                 self.parser(parser)
