@@ -49,13 +49,17 @@ class Env:
             if self._prefix is not None
             else options.env_prefix
         )
+        if prefix.islower() and not prefix.endswith("_"):
+            prefix += "_"
         name = prefix + name if prefix is not None else name
         if default is not missing:
             return os.environ.get(name, default)
         try:
             return os.environ[name]
         except KeyError:
-            raise ImproperlyConfigured("Environment variable {!r} not set".format(name))
+            raise ImproperlyConfigured(
+                "Environment variable {!r} not set".format(name.upper())
+            )
 
     def __getattr__(self, name):
         try:
