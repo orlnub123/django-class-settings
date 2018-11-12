@@ -6,12 +6,12 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "django-class-settings"
 version = "0.1.0-dev"
-description = "12factor compliant class-based settings for Django."
+description = "Effortless class-based settings for Django."
 license = "MIT"
 authors = ["orlnub123 <orlnub123@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/orlnub123/django-class-settings"
-keywords = ["django", "settings", "configuration", "12factor"]
+keywords = ["django", "settings", "configuration"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: Django",
