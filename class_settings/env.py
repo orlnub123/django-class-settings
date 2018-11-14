@@ -70,6 +70,13 @@ class Env:
                 "{!r} object has no attribute {!r}".format(cls_name, name)
             )
 
+    @staticmethod
+    def read_env(file=None):
+        from dotenv import load_dotenv
+
+        file = file if file is not None else ".env"
+        load_dotenv(file, override=True)
+
     @contextlib.contextmanager
     def prefixed(self, prefix):
         if prefix.islower() and not prefix.endswith("_"):

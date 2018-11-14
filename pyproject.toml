@@ -27,3 +27,4 @@ packages = [{include = "class_settings"}]
 [tool.poetry.dependencies]
 python = "^3.4"
 django = "*"
+python-dotenv = ">=0.7"
