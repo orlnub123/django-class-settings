@@ -30,7 +30,7 @@ class SettingsImporter:
         try:
             cls = getattr(module, settings_class)
         except AttributeError as error:
-            raise ImproperlyConfigured(error)
+            raise ImproperlyConfigured(error) from None
         return SettingsModule(spec.name, cls())
 
     def exec_module(self, module):
