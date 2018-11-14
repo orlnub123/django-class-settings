@@ -3,6 +3,8 @@ import types
 
 from django.core.exceptions import ImproperlyConfigured
 
+from .settings import Settings
+
 
 class SettingsModule(types.ModuleType):
     def __init__(self, name, cls):
@@ -26,11 +28,18 @@ class SettingsImporter:
     def create_module(self, spec):
         settings_module, settings_class = spec.name.rsplit(":", maxsplit=1)
         module = importlib.import_module(settings_module)
-        # manage.py only catches ImproperlyConfigured and ImportError
         try:
             cls = getattr(module, settings_class)
-        except AttributeError as error:
-            raise ImproperlyConfigured(error) from None
+        except AttributeError:
+            raise ImproperlyConfigured(
+                "Module {!r} has no Settings subclass named {!r}".format(
+                    settings_module, settings_class
+                )
+            ) from None
+        if not (isinstance(cls, type) and issubclass(cls, Settings)):
+            raise ImproperlyConfigured(
+                "{!r} is not a Settings subclass".format(settings_class)
+            )
         return SettingsModule(spec.name, cls())
 
     def exec_module(self, module):
