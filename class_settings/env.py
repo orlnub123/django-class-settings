@@ -72,6 +72,8 @@ class Env:
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
+        if prefix.islower() and not prefix.endswith("_"):
+            prefix += "_"
         old_prefix = self._prefix
         if old_prefix is None:
             self._prefix = prefix
