@@ -59,7 +59,7 @@ class Env:
         except KeyError:
             raise ImproperlyConfigured(
                 "Environment variable {!r} not set".format(name.upper())
-            )
+            ) from None
 
     def __getattr__(self, name):
         try:
@@ -68,7 +68,7 @@ class Env:
             cls_name = type(self).__name__
             raise AttributeError(
                 "{!r} object has no attribute {!r}".format(cls_name, name)
-            )
+            ) from None
 
     @contextlib.contextmanager
     def prefixed(self, prefix):

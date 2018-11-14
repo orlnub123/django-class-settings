@@ -26,7 +26,7 @@ def setup():
             raise ImproperlyConfigured(
                 "Settings could not be setup. The environment variable {!r} "
                 "is not defined.".format(error.args[0])
-            )
+            ) from None
         os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
             settings_module, settings_class
         )
