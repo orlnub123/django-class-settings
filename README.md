@@ -49,6 +49,7 @@ pip install django-class-settings
 ## Resources
 
 - Releases: https://pypi.org/project/django-class-settings/
+- Changelog: https://github.com/orlnub123/django-class-settings/blob/master/CHANGELOG.md
 - Code: https://github.com/orlnub123/django-class-settings
 - License: [MIT][license-url]
 
