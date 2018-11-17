@@ -15,7 +15,38 @@ classes instead of modules. Some of the benefits of using classes include:
 
 ## Example
 
+```bash
+# .env
+export DJANGO_SECRET_KEY='*2#fz@c0w5fe8f-'
+export DJANGO_DEBUG=true
+```
+
 ```python
+# manage.py
+import os
+import sys
+
+import class_settings
+from class_settings import env
+
+if __name__ == '__main__':
+    env.read_env()
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
+    class_settings.setup()
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+```
+
+```python
+# myproject/settings.py
 from class_settings import Settings, env
 
 
