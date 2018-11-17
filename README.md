@@ -8,6 +8,7 @@
 
 django-class-settings aims to simplify complicated settings layouts by using
 classes instead of modules. Some of the benefits of using classes include:
+
 - Real inheritance
 - [Foolproof settings layouts][local_settings]
 - Properties
@@ -73,7 +74,8 @@ Install it from [PyPI][pypi-url] with [pip][pip-url]:
 pip install django-class-settings
 ```
 
-**Requirements:**
+### Requirements
+
 - Django 1.11+
 - Python 3.4+
 
