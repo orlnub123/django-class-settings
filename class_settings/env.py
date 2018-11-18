@@ -36,11 +36,11 @@ class Env:
                 break
             frame = frame.f_back
         else:
-            options = None
+            if name is None:
+                raise TypeError("'name' is required outside of Settings subclasses")
+            options = Options(meta=None)
 
         if name is None:
-            if options is None:
-                raise TypeError("'name' is required outside of Settings classes")
             return DeferredEnv(self, prefix=prefix, default=default)
         prefix = (
             prefix
