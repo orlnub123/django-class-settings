@@ -46,9 +46,8 @@ class Env:
             options = None
 
         if name is None or optional:
-            return DeferredEnv(
-                self, name=name, prefix=prefix, default=default, optional=optional
-            )
+            kwargs = {"name": name, "prefix": prefix, "default": default}
+            return DeferredEnv(self, kwargs=kwargs, optional=optional)
         prefix = normalize_prefix(
             prefix
             if prefix is not None
@@ -119,20 +118,20 @@ class Env:
 
 
 class DeferredEnv:
-    def __init__(self, env, *, name=None, prefix=None, default=missing, optional=False):
+    def __init__(self, env, *, kwargs, optional):
         self._env = env
-        self._name = name
-        self._prefix = prefix
-        self._default = default
         self._parser = None
+        self._kwargs = kwargs
         self._optional = optional
 
     def _parse(self, name):
-        name = self._name if self._name is not None else name
+        kwargs = self._kwargs.copy()
+        name_kwarg = kwargs.pop("name")
+        name = name_kwarg if name_kwarg is not None else name
         if self._parser is not None:
-            return self._parser(name, prefix=self._prefix, default=self._default)
+            return self._parser(name, **kwargs)
         else:
-            return self._env(name, prefix=self._prefix, default=self._default)
+            return self._env(name, **kwargs)
 
 
 env = Env()
