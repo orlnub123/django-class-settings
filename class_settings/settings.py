@@ -5,6 +5,8 @@ import inspect
 import sys
 import tokenize
 
+from django.core.exceptions import ImproperlyConfigured
+
 from .env import DeferredEnv
 from .options import Options
 
@@ -12,7 +14,12 @@ from .options import Options
 class SettingsDict(dict):
     def __setitem__(self, key, value):
         if isinstance(value, DeferredEnv):
-            value = value._parse(key)
+            try:
+                value = value._parse(key)
+            except ImproperlyConfigured:
+                if value._optional:
+                    return
+                raise
         super().__setitem__(key, value)
 
 

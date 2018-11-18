@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Added `Env.read_env` to read into the environment from a .env file.
+- Added the `optional` env argument that defaults to acting as a noop.
 
 ## [0.1.1] - Unreleased
 

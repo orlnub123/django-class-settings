@@ -29,7 +29,7 @@ class Env:
             if callable(parser):
                 self.parser(parser)
 
-    def __call__(self, name=None, *, prefix=None, default=missing):
+    def __call__(self, name=None, *, prefix=None, default=missing, optional=False):
         frame = sys._getframe(1)
         while frame is not None:
             options = frame.f_locals.get("__meta__")
@@ -37,12 +37,18 @@ class Env:
                 break
             frame = frame.f_back
         else:
+            if name is None:
+                raise TypeError("'name' is required outside of Settings subclasses")
+            if optional:
+                raise TypeError(
+                    "'optional' is only applicable inside Settings subclasses"
+                )
             options = None
 
-        if name is None:
-            if options is None:
-                raise TypeError("'name' is required outside of Settings classes")
-            return DeferredEnv(self, prefix=prefix, default=default)
+        if name is None or optional:
+            return DeferredEnv(
+                self, name=name, prefix=prefix, default=default, optional=optional
+            )
         prefix = normalize_prefix(
             prefix
             if prefix is not None
@@ -113,13 +119,16 @@ class Env:
 
 
 class DeferredEnv:
-    def __init__(self, env, *, prefix=None, default=missing):
+    def __init__(self, env, *, name=None, prefix=None, default=missing, optional=False):
         self._env = env
+        self._name = name
         self._prefix = prefix
         self._default = default
         self._parser = None
+        self._optional = optional
 
     def _parse(self, name):
+        name = self._name if self._name is not None else name
         if self._parser is not None:
             return self._parser(name, prefix=self._prefix, default=self._default)
         else:
