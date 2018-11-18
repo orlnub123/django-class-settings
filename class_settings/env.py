@@ -2,6 +2,7 @@ import contextlib
 import functools
 import os
 import sys
+import types
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -38,7 +39,8 @@ class Env:
         else:
             if name is None:
                 raise TypeError("'name' is required outside of Settings subclasses")
-            options = Options(meta=None)
+            meta = types.SimpleNamespace(env_prefix=None)
+            options = Options(meta)
 
         if name is None:
             return DeferredEnv(self, prefix=prefix, default=default)
