@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from . import parsers
 from .options import Options
+from .utils import normalize_prefix
 
 
 class Missing:
@@ -42,15 +43,13 @@ class Env:
             if options is None:
                 raise TypeError("'name' is required outside of Settings classes")
             return DeferredEnv(self, prefix=prefix, default=default)
-        prefix = (
+        prefix = normalize_prefix(
             prefix
             if prefix is not None
             else self._prefix
             if self._prefix is not None
             else options.env_prefix
         )
-        if prefix.islower() and not prefix.endswith("_"):
-            prefix += "_"
         name = prefix + name if prefix is not None else name
         if default is not missing:
             return os.environ.get(name, default)
@@ -79,8 +78,7 @@ class Env:
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
-        if prefix.islower() and not prefix.endswith("_"):
-            prefix += "_"
+        prefix = normalize_prefix(prefix)
         old_prefix = self._prefix
         if old_prefix is None:
             self._prefix = prefix

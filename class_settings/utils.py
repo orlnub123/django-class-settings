@@ -12,3 +12,9 @@ def patch_settings_setup(func):
     # Circumvent any custom logic
     object.__setattr__(settings, "_setup", setup)
     return func
+
+
+def normalize_prefix(prefix):
+    if prefix.islower() and not prefix.endswith("_"):
+        prefix += "_"
+    return prefix.upper()
