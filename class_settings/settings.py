@@ -66,8 +66,16 @@ class SettingsMeta(type):
         namespace["_meta"] = options
         return super().__new__(meta, name, bases, namespace)
 
+    def __dir__(cls):
+        default_settings = cls._meta.default_settings
+        return set(super().__dir__() + dir(default_settings))
 
-class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assignment
+    def __getattr__(cls, name):
+        default_settings = cls._meta.default_settings
+        return getattr(default_settings, name)
+
+
+class Settings(metaclass=SettingsMeta):
     def __dir__(self):
         default_settings = self._meta.default_settings
         return set(super().__dir__() + dir(default_settings))
@@ -78,6 +86,3 @@ class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assig
 
     def is_overridden(self, setting):
         return setting in vars(self)
-
-
-Settings.__class__ = SettingsMeta
