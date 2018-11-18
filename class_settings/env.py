@@ -43,7 +43,7 @@ class Env:
                 raise TypeError(
                     "'optional' is only applicable inside Settings subclasses"
                 )
-            options = None
+            options = Options(meta=None)
 
         if name is None or optional:
             kwargs = {"name": name, "prefix": prefix, "default": default}

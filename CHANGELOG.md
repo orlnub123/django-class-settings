@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   having `_` appended to their prefixes.
 - Fixed exceptions not being correctly chained.
 - Made sure DJANGO_SETTINGS_CLASS points to a Settings subclass.
+- Fixed prefixless env calls erroring outside of Settings subclasses.
 
 ## [0.1.0] - 2018-11-13
 
