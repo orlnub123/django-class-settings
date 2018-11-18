@@ -2,6 +2,7 @@ import contextlib
 import functools
 import os
 import sys
+import types
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -43,7 +44,8 @@ class Env:
                 raise TypeError(
                     "'optional' is only applicable inside Settings subclasses"
                 )
-            options = Options(meta=None)
+            meta = types.SimpleNamespace(env_prefix=None)
+            options = Options(meta)
 
         if name is None or optional:
             kwargs = {"name": name, "prefix": prefix, "default": default}
