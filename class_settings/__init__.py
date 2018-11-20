@@ -1,4 +1,4 @@
-__version__ = "0.1.1-dev"
+__version__ = "0.1.1"
 
 from .env import Env, env
 from .settings import Settings
