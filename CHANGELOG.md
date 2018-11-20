@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added the `optional` env argument that defaults to acting as a noop.
 - Made the default settings accessible directly from the class.
 
+## [0.1.2] - Unreleased
+
 ## [0.1.1] - 2018-11-20
 
 ### Fixed
@@ -28,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 Initial release.
 
 [0.2.0]: https://github.com/orlnub123/django-class-settings/compare/0.1.0...master
+[0.1.2]: https://github.com/orlnub123/django-class-settings/compare/0.1.1...release/0.1
 [0.1.1]: https://github.com/orlnub123/django-class-settings/releases/tag/0.1.1
 [0.1.0]: https://github.com/orlnub123/django-class-settings/releases/tag/0.1.0
