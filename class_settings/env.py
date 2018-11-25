@@ -21,7 +21,7 @@ missing = Missing()
 
 class Env:
     def __init__(self):
-        self._prefix = None
+        self._prefix = missing
         self._parsers = {}
         # Populate with default parsers
         for name, parser in vars(parsers).items():
@@ -30,7 +30,7 @@ class Env:
             if callable(parser):
                 self.parser(parser)
 
-    def __call__(self, name=None, *, prefix=None, default=missing, optional=False):
+    def __call__(self, name=None, *, prefix=missing, default=missing, optional=False):
         frame = sys._getframe(1)
         while frame is not None:
             options = frame.f_locals.get("__meta__")
@@ -52,9 +52,9 @@ class Env:
             return DeferredEnv(self, kwargs=kwargs, optional=optional)
         prefix = normalize_prefix(
             prefix
-            if prefix is not None
+            if prefix is not missing
             else self._prefix
-            if self._prefix is not None
+            if self._prefix is not missing
             else options.env_prefix
         )
         name = prefix + name if prefix is not None else name
@@ -85,9 +85,9 @@ class Env:
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
-        prefix = normalize_prefix(prefix)
+        prefix = normalize_prefix(prefix) if prefix is not None else prefix
         old_prefix = self._prefix
-        if old_prefix is None:
+        if old_prefix is missing:
             self._prefix = prefix
         else:
             self._prefix += prefix

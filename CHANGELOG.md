@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added `Env.read_env` to read into the environment from a .env file.
 - Added the `optional` env argument that defaults to acting as a noop.
 - Made the default settings accessible directly from the class.
+- Allowed `None` to be passed as a prefix.
 
 ## [0.1.2] - Unreleased
 
