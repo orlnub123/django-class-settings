@@ -87,7 +87,7 @@ class Env:
     def prefixed(self, prefix):
         prefix = normalize_prefix(prefix) if prefix is not None else prefix
         old_prefix = self._prefix
-        if old_prefix is missing:
+        if not old_prefix or prefix is None:
             self._prefix = prefix
         else:
             self._prefix += prefix
