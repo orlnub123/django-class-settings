@@ -1,10 +1,10 @@
 # django-class-settings
 
-[![pypi-image]][pypi-url]
-[![django-version-image]][pypi-url]
-[![python-version-image]][pypi-url]
-[![license-image]][license-url]
-[![code-style-image]][code-style-url]
+[![pypi][pypi-image]][pypi-url]
+[![django versions][django-version-image]][pypi-url]
+[![python][python-version-image]][pypi-url]
+[![license][license-image]][license-url]
+[![code style][code-style-image]][code-style-url]
 
 django-class-settings aims to simplify complicated settings layouts by using
 classes instead of modules. Some of the benefits of using classes include:
