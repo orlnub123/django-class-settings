@@ -1,0 +1,8 @@
+version: 2
+
+python:
+    install:
+        - path: docs/
+
+mkdocs:
+    configuration: docs/mkdocs.yml

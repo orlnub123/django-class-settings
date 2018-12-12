@@ -1,5 +1,8 @@
-version: 2
+# TODO: Replace with .readthedocsv2.yml once the v2 format becomes supported
+requirements_file: docs/requirements.txt
+
+build:
+    image: latest
 
 python:
-    install:
-        - path: docs/
+    version: 3.6
