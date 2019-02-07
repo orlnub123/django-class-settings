@@ -1,8 +1,8 @@
-# TODO: Replace with .readthedocsv2.yml once the v2 format becomes supported
-requirements_file: docs/requirements.txt
-
-build:
-    image: latest
+version: 2
 
 python:
-    version: 3.6
+    install:
+        - path: docs/
+
+mkdocs:
+    configuration: docs/mkdocs.yml

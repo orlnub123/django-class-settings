@@ -30,7 +30,7 @@ class IndexGeneratorPlugin(BasePlugin):
         if self.exists or page.file.name != "index":
             return
         source_lines = []
-        with open("README.md", encoding="utf-8") as file:
+        with open("../README.md", encoding="utf-8") as file:
             readme_html = markdown.markdown(file.read(), extensions=["mdx_partial_gfm"])
         readme_root = lxml.html.fromstring(readme_html)
         source_lines.append(self.get_title(readme_root))

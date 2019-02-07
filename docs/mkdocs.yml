@@ -3,7 +3,7 @@ repo_url: https://github.com/orlnub123/django-class-settings
 site_description: Effortless class-based settings for Django.
 copyright: Copyright © 2018 orlnub123.
 theme: readthedocs
-docs_dir: docs/files
+docs_dir: files
 
 nav:
     - Index: index.md
