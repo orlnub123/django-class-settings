@@ -1,4 +1,3 @@
-# https://github.com/sdispater/poetry/issues/321#issuecomment-406623290
 [build-system]
 requires = ["poetry"]
 build-backend = "poetry.masonry.api"
