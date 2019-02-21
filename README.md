@@ -34,7 +34,6 @@ if __name__ == '__main__':
     env.read_env()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
     os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
-    class_settings.setup()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -43,6 +42,7 @@ if __name__ == '__main__':
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    class_settings.setup()
     execute_from_command_line(sys.argv)
 ```
 

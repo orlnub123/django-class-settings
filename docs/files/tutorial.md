@@ -94,7 +94,6 @@ modifying the `manage.py` file a bit:
  if __name__ == '__main__':
      os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 +    os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
-+    class_settings.setup()
      try:
          from django.core.management import execute_from_command_line
      except ImportError as exc:
@@ -103,6 +102,7 @@ modifying the `manage.py` file a bit:
              "available on your PYTHONPATH environment variable? Did you "
              "forget to activate a virtual environment?"
          ) from exc
++    class_settings.setup()
      execute_from_command_line(sys.argv)
 ```
 
@@ -180,7 +180,6 @@ And then modify `manage.py` to read from it:
 +    env.read_env()
      os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
      os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
-     class_settings.setup()
      try:
          from django.core.management import execute_from_command_line
      except ImportError as exc:
@@ -189,6 +188,7 @@ And then modify `manage.py` to read from it:
              "available on your PYTHONPATH environment variable? Did you "
              "forget to activate a virtual environment?"
          ) from exc
+     class_settings.setup()
      execute_from_command_line(sys.argv)
 ```
 
