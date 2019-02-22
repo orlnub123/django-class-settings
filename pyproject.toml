@@ -31,7 +31,4 @@ python-dotenv = ">=0.7"
 [tool.poetry.dev-dependencies]
 black = {version = "^18.9b", python = "^3.6"}
 isort = "^4.3"
-mkdocs = "^1.0"
-markdown = "^2.6"
-py-gfm = "^0.1"
-lxml = "^4.3"
+docs = {path = "docs/"}
