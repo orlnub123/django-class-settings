@@ -112,3 +112,4 @@ dmypy.json
 
 # Custom
 /poetry.lock
+/docs/site/
