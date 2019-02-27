@@ -30,6 +30,7 @@ python-dotenv = ">=0.7"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^18.9b", python = "^3.6"}
+invoke = "^1.2"
 isort = {version = "^4.3", extras = ["pyproject"]}
 
 [tool.isort]
