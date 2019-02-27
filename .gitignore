@@ -111,4 +111,4 @@ venv.bak/
 dmypy.json
 
 # Custom
-poetry.lock
+/poetry.lock

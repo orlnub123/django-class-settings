@@ -31,7 +31,6 @@ python-dotenv = ">=0.7"
 [tool.poetry.dev-dependencies]
 black = {version = "^18.9b", python = "^3.6"}
 isort = {version = "^4.3", extras = ["pyproject"]}
-docs = {path = "docs/"}
 
 [tool.isort]
 multi_line_output=3

@@ -1,0 +1,19 @@
+[build-system]
+requires = ["poetry"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry]
+name = "docs"
+version = "0"
+authors = ["orlnub123 <orlnub123@gmail.com>"]
+packages = [{include = "plugins"}]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+mkdocs = "^1.0"
+markdown = "^2.6"
+py-gfm = "^0.1"
+lxml = "^4.3"
+
+[tool.poetry.plugins."mkdocs.plugins"]
+index_generator = "plugins.generators:IndexGeneratorPlugin"
