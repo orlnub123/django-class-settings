@@ -91,18 +91,20 @@ modifying the `manage.py` file a bit:
 
 +import class_settings
 +
++from django.core.management import execute_from_command_line
++
  if __name__ == '__main__':
      os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 +    os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
-     try:
-         from django.core.management import execute_from_command_line
-     except ImportError as exc:
-         raise ImportError(
-             "Couldn't import Django. Are you sure it's installed and "
-             "available on your PYTHONPATH environment variable? Did you "
-             "forget to activate a virtual environment?"
-         ) from exc
 +    class_settings.setup()
+-    try:
+-        from django.core.management import execute_from_command_line
+-    except ImportError as exc:
+-        raise ImportError(
+-            "Couldn't import Django. Are you sure it's installed and "
+-            "available on your PYTHONPATH environment variable? Did you "
+-            "forget to activate a virtual environment?"
+-        ) from exc
      execute_from_command_line(sys.argv)
 ```
 
@@ -111,6 +113,9 @@ Going through the changes step-by-step:
 1. We import the library.
 2. We default the DJANGO_SETTINGS_CLASS environment variable to MySettings.
 3. We call `setup`.
+
+We've also removed the now useless try except because since the library imports
+Django itself, Django would always be available at that point.
 
 The last change is where the magic happens. Internally `setup` imports the
 module defined in DJANGO_SETTINGS_MODULE, creates an instance of the class
@@ -176,18 +181,12 @@ And then modify `manage.py` to read from it:
  import class_settings
 +from class_settings import env
 
+ from django.core.management import execute_from_command_line
+
  if __name__ == '__main__':
 +    env.read_env()
      os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
      os.environ.setdefault('DJANGO_SETTINGS_CLASS', 'MySettings')
-     try:
-         from django.core.management import execute_from_command_line
-     except ImportError as exc:
-         raise ImportError(
-             "Couldn't import Django. Are you sure it's installed and "
-             "available on your PYTHONPATH environment variable? Did you "
-             "forget to activate a virtual environment?"
-         ) from exc
      class_settings.setup()
      execute_from_command_line(sys.argv)
 ```
