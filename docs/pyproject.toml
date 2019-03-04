@@ -17,3 +17,4 @@ lxml = "^4.3"
 
 [tool.poetry.plugins."mkdocs.plugins"]
 index_generator = "plugins.generators:IndexGeneratorPlugin"
+changelog_generator = "plugins.generators:ChangelogGeneratorPlugin"

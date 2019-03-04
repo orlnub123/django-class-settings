@@ -68,3 +68,23 @@ class IndexGeneratorPlugin(BasePlugin):
         toc_root = lxml.html.fromstring(md.toc)
         toc_element = toc_root.xpath("/html/body/div/ul/li[1]/ul")[0]
         return lxml.html.tostring(toc_element, encoding="unicode")
+
+
+class ChangelogGeneratorPlugin(BasePlugin):
+    def on_files(self, files, config):
+        self.exists = any(file.name == "changelog" for file in files)
+        if not self.exists:
+            files.append(
+                File(
+                    "changelog.md",
+                    config["docs_dir"],
+                    config["site_dir"],
+                    config["use_directory_urls"],
+                )
+            )
+
+    def on_page_read_source(self, _, page, config):
+        if self.exists or page.file.name != "changelog":
+            return
+        with open("../CHANGELOG.md", encoding="utf-8") as file:
+            return file.read()

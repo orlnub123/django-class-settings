@@ -8,6 +8,8 @@ docs_dir: files
 nav:
     - Index: index.md
     - Tutorial: tutorial.md
+    - Changelog: changelog.md
 
 plugins:
+    - changelog_generator
     - index_generator
