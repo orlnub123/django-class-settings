@@ -141,6 +141,13 @@ def format(c):
 
 
 @task
+def lint(c):
+    c.run("flake8 .", warn=True)
+    c.run("isort -rc -c .", warn=True)
+    c.run("black --check .", warn=True)
+
+
+@task
 @check_git
 def release(c, publish=False, bump=""):
     releaser = Releaser(c)
