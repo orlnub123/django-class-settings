@@ -164,7 +164,7 @@ def release(c, publish=False, bump=""):
     if current_branch == "master":
         c.run(f"git commit -am 'Release {releaser.release_version}'")
     else:
-        release_prefix = current_branch.lstrip("release/")
+        release_prefix = current_branch[len("release/") :]
         c.run(f"git commit -am '{release_prefix} Release {releaser.release_version}'")
     c.run(
         f"git tag -am 'django-class-settings {releaser.release_version}' "
@@ -196,7 +196,7 @@ def bump(c, version):
     if current_branch == "master":
         c.run(f"git commit -am 'Bump version to {bumper.bump_version}'")
     else:
-        bump_prefix = current_branch.lstrip("release/")
+        bump_prefix = current_branch[len("release/") :]
         c.run(f"git commit -am '{bump_prefix} Bump version to {bumper.bump_version}'")
 
     c.run("git checkout master")
