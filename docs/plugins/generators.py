@@ -13,6 +13,9 @@ class IndexGeneratorPlugin(BasePlugin):
     def on_config(self, config):
         self.config = config
 
+    def on_nav(self, nav, files, config):
+        self.nav = nav
+
     def on_files(self, files, config):
         self.files = files
         self.exists = any(file.name == "index" for file in files)
@@ -37,8 +40,14 @@ class IndexGeneratorPlugin(BasePlugin):
         source_lines.append(self.get_description(readme_root))
 
         source_lines.append("## Table of Contents")
-        pages = [file.page for file in self.files.documentation_pages()]
-        for page in pages[: pages.index(page)]:  # Exclude unpopulated pages
+        available_pages = []
+        for file in self.files.documentation_pages():
+            if file.page is page:
+                break
+            available_pages.append(file.page)
+        for page in self.nav.pages:
+            if page not in available_pages:
+                continue  # Exclude unpopulated pages
             source_lines.append(f"### [{page.title}]({page.url})")
             root = lxml.html.fromstring(page.content)
             source_lines.append(self.get_description(root))
