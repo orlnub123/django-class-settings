@@ -34,7 +34,7 @@ class IndexGeneratorPlugin(BasePlugin):
             return
         source_lines = []
         with open("../README.md", encoding="utf-8") as file:
-            readme_html = markdown.markdown(file.read(), extensions=["mdx_partial_gfm"])
+            readme_html = markdown.markdown(file.read())
         readme_root = lxml.html.fromstring(readme_html)
         source_lines.append(self.get_title(readme_root))
         source_lines.append(self.get_description(readme_root))

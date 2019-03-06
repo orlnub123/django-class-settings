@@ -11,8 +11,7 @@ packages = [{include = "plugins"}]
 [tool.poetry.dependencies]
 python = "^3.6"
 mkdocs = "^1.0"
-markdown = "^2.6"
-py-gfm = "^0.1"
+markdown = "^3.0"
 lxml = "^4.3"
 
 [tool.poetry.plugins."mkdocs.plugins"]
