@@ -68,7 +68,7 @@ class IndexGeneratorPlugin(BasePlugin):
         )
 
     def get_toc(self, source):
-        toc_config = {"toc": {}}
+        toc_config = {"toc": {"toc_depth": 2}}
         md = markdown.Markdown(
             extensions=self.config["markdown_extensions"],  # toc is builtin
             extension_configs={**self.config["mdx_configs"], **toc_config},
