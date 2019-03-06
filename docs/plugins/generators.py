@@ -1,10 +1,23 @@
+import os
+from pathlib import Path
+
 import lxml.html
 import markdown
 from mkdocs.plugins import BasePlugin
 from mkdocs.structure.files import File
 
 
-class IndexGeneratorPlugin(BasePlugin):
+class BaseGeneratorPlugin(BasePlugin):
+    def on_pre_build(self, config):
+        self.old_dir = os.getcwd()
+        docs_dir = Path(config.config_file_path).parent
+        os.chdir(docs_dir)
+
+    def on_post_build(self, config):
+        os.chdir(self.old_dir)
+
+
+class IndexGeneratorPlugin(BaseGeneratorPlugin):
     """A MkDocs plugin that generates the index.
 
     Make sure it comes after any other file generators.
@@ -79,7 +92,7 @@ class IndexGeneratorPlugin(BasePlugin):
         return lxml.html.tostring(toc_element, encoding="unicode")
 
 
-class ChangelogGeneratorPlugin(BasePlugin):
+class ChangelogGeneratorPlugin(BaseGeneratorPlugin):
     def on_files(self, files, config):
         self.exists = any(file.name == "changelog" for file in files)
         if not self.exists:
