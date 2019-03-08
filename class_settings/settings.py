@@ -3,6 +3,7 @@ import __future__
 import ast
 import inspect
 import sys
+import textwrap
 import tokenize
 
 from django.core.exceptions import ImproperlyConfigured
@@ -30,6 +31,7 @@ class SettingsMeta(type):
         with tokenize.open(filename) as file:
             lines = file.readlines()[frame.f_lineno - 1 :]
         source = "".join(inspect.getblock(lines))
+        source = textwrap.dedent(source.expandtabs())
 
         cls_node = ast.parse(source).body[0]
         for node in reversed(list(ast.iter_child_nodes(cls_node))):

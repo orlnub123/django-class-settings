@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [0.1.2] - Unreleased
 
+### Fixed
+
+- Fixed indented Settings subclasses erroring.
+
 ## [0.1.1] - 2018-11-20
 
 ### Fixed
