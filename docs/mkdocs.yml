@@ -1,7 +1,7 @@
 site_name: django-class-settings
 repo_url: https://github.com/orlnub123/django-class-settings
 site_description: Effortless class-based settings for Django.
-copyright: Copyright © 2018 orlnub123.
+copyright: Copyright © 2018-2019 orlnub123.
 theme: readthedocs
 docs_dir: files
 
