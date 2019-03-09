@@ -149,6 +149,18 @@ def lint(c):
 
 @task
 @check_git
+def backport(c, commit):
+    current_branch = c.run("git rev-parse --abbrev-ref HEAD").stdout.strip()
+    if current_branch == "master":
+        sys.exit("Cannot backport from master. Did you switch branches?")
+    c.run(f"git cherry-pick -x {commit}")
+    message = c.run("git log --format=%B -n 1").stdout.strip()
+    subject_prefix = f"[{current_branch[len('release/') :]}]"
+    c.run(f"git commit --amend -m '{subject_prefix} {message}'")
+
+
+@task
+@check_git
 def release(c, publish=False, bump=""):
     releaser = Releaser(c)
     if not releaser.version.endswith("-dev"):
