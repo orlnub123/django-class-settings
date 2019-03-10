@@ -72,7 +72,12 @@ class Settings(metaclass=type("Meta", (type,), {})):  # Hack for __class__ assig
         return getattr(default_settings, name)
 
     def is_overridden(self, setting):
-        return setting in vars(self)
+        try:
+            self.__getattribute__(setting)  # Avoids __getattr__
+        except AttributeError:
+            return False
+        else:
+            return True
 
 
 Settings.__class__ = SettingsMeta
