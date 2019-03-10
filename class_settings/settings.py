@@ -87,4 +87,9 @@ class Settings(metaclass=SettingsMeta):
         return getattr(default_settings, name)
 
     def is_overridden(self, setting):
-        return setting in vars(self)
+        try:
+            self.__getattribute__(setting)  # Avoids __getattr__
+        except AttributeError:
+            return False
+        else:
+            return True

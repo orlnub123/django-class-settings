@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - Fixed indented Settings subclasses erroring.
+- Fixed `Settings.is_overridden` ignoring class attributes.
 
 ## [0.1.1] - 2018-11-20
 
