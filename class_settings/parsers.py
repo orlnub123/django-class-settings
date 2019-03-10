@@ -24,7 +24,6 @@ def _sequence_parser(type):
 
 # Numeric types
 
-
 int = int
 float = float
 complex = complex
@@ -32,26 +31,22 @@ complex = complex
 
 # Sequence types
 
-
 list = _sequence_parser(list)
 tuple = _sequence_parser(tuple)
 
 
 # Text sequence types
 
-
 str = str
 
 
 # Binary sequence types
-
 
 bytes = bytes
 bytearray = bytearray
 
 
 # Set types
-
 
 set = _sequence_parser(set)
 frozenset = _sequence_parser(frozenset)
