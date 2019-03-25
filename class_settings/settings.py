@@ -65,6 +65,8 @@ class SettingsMeta(type):
         options = namespace.pop("__options__", None)
         if not isinstance(options, Options):
             raise RuntimeError("__options__ is not an Options object")
+        if "Meta" in namespace and not isinstance(namespace["Meta"], type):
+            raise TypeError("{}.Meta has to be a class".format(name))
         namespace["_options"] = options
         return super().__new__(meta, name, bases, namespace)
 

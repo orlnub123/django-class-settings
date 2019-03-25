@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [0.1.3] - Unreleased
 
+### Fixed
+
+- Ensured Meta is a class.
+
 ## [0.1.2] - 2019-03-17
 
 ### Fixed
