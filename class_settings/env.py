@@ -33,7 +33,7 @@ class Env:
     def __call__(self, name=None, *, prefix=missing, default=missing, optional=False):
         frame = sys._getframe(1)
         while frame is not None:
-            options = frame.f_locals.get("__meta__")
+            options = frame.f_locals.get("__options__")
             if isinstance(options, Options):
                 break
             frame = frame.f_back

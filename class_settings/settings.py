@@ -59,31 +59,31 @@ class SettingsMeta(type):
                     break
             else:
                 meta = None
-        return SettingsDict(__meta__=Options(meta))
+        return SettingsDict(__options__=Options(meta))
 
     def __new__(meta, name, bases, namespace):
-        options = namespace.pop("__meta__", None)
+        options = namespace.pop("__options__", None)
         if not isinstance(options, Options):
-            raise RuntimeError("__meta__ is not an Options object")
-        namespace["_meta"] = options
+            raise RuntimeError("__options__ is not an Options object")
+        namespace["_options"] = options
         return super().__new__(meta, name, bases, namespace)
 
     def __dir__(cls):
-        default_settings = cls._meta.default_settings
+        default_settings = cls._options.default_settings
         return set(super().__dir__() + dir(default_settings))
 
     def __getattr__(cls, name):
-        default_settings = cls._meta.default_settings
+        default_settings = cls._options.default_settings
         return getattr(default_settings, name)
 
 
 class Settings(metaclass=SettingsMeta):
     def __dir__(self):
-        default_settings = self._meta.default_settings
+        default_settings = self._options.default_settings
         return set(super().__dir__() + dir(default_settings))
 
     def __getattr__(self, name):
-        default_settings = self._meta.default_settings
+        default_settings = self._options.default_settings
         return getattr(default_settings, name)
 
     def is_overridden(self, setting):
