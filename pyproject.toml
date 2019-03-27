@@ -10,6 +10,7 @@ license = "MIT"
 authors = ["orlnub123 <orlnub123@gmail.com>"]
 readme = "README.md"
 repository = "https://github.com/orlnub123/django-class-settings"
+documentation = "https://django-class-settings.readthedocs.io/"
 keywords = ["django", "settings", "configuration"]
 classifiers = [
     "Development Status :: 3 - Alpha",
