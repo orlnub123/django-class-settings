@@ -2,6 +2,8 @@ from django.conf import global_settings
 
 
 class Options:
+    defaults = {"default_settings": global_settings, "env_prefix": "django"}
+
     def __init__(self, meta):
-        self.default_settings = getattr(meta, "default_settings", global_settings)
-        self.env_prefix = getattr(meta, "env_prefix", "django")
+        for option, default in self.defaults.items():
+            setattr(self, option, getattr(meta, option, default))
