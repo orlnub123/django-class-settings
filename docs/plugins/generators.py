@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import lxml.html
@@ -9,12 +8,7 @@ from mkdocs.structure.files import File
 
 class BaseGeneratorPlugin(BasePlugin):
     def on_pre_build(self, config):
-        self.old_dir = os.getcwd()
-        docs_dir = Path(config.config_file_path).parent
-        os.chdir(docs_dir)
-
-    def on_post_build(self, config):
-        os.chdir(self.old_dir)
+        self.docs_dir = Path(config.config_file_path).resolve().parent
 
 
 class IndexGeneratorPlugin(BaseGeneratorPlugin):
@@ -46,7 +40,7 @@ class IndexGeneratorPlugin(BaseGeneratorPlugin):
         if self.exists or page.file.name != "index":
             return
         source_lines = []
-        with open("../README.md", encoding="utf-8") as file:
+        with open(self.docs_dir.parent / "README.md", encoding="utf-8") as file:
             readme_html = markdown.markdown(file.read())
         readme_root = lxml.html.fromstring(readme_html)
         source_lines.append(self.get_title(readme_root))
@@ -108,5 +102,5 @@ class ChangelogGeneratorPlugin(BaseGeneratorPlugin):
     def on_page_read_source(self, _, page, config):
         if self.exists or page.file.name != "changelog":
             return
-        with open("../CHANGELOG.md", encoding="utf-8") as file:
+        with open(self.docs_dir.parent / "CHANGELOG.md", encoding="utf-8") as file:
             return file.read()
