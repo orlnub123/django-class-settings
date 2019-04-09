@@ -97,7 +97,7 @@ class Env:
     def parser(self, _func=None, *, name=None, parse_default=False):
         def decorator(func):
             @functools.wraps(func)
-            def parser(name=None, *, prefix=None, default=missing, **kwargs):
+            def parser(name=None, *, prefix=missing, default=missing, **kwargs):
                 try:
                     value = self(name, prefix=prefix)
                 except ImproperlyConfigured:
