@@ -85,7 +85,7 @@ class Env:
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
-        prefix = normalize_prefix(prefix) if prefix is not None else prefix
+        prefix = normalize_prefix(prefix)
         old_prefix = self._prefix
         if not old_prefix or prefix is None:
             self._prefix = prefix
