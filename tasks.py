@@ -148,6 +148,11 @@ def lint(c):
 
 
 @task
+def test(c):
+    c.run("pytest .", warn=True, pty=True)
+
+
+@task
 @check_git
 def backport(c, commit):
     current_branch = c.run("git rev-parse --abbrev-ref HEAD").stdout.strip()
