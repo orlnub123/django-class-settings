@@ -61,8 +61,9 @@ class Releaser:
 
     def _update_changelog_date(self):
         with open("CHANGELOG.md", "r+") as f:
+            escaped_version = re.escape(self.release_version)
             content = re.sub(
-                fr"^([ \t]*#+[ \t]*\[{re.escape(self.release_version)}\] - )Unreleased$",
+                fr"^([ \t]*#+[ \t]*\[{escaped_version}\] - )Unreleased$",
                 fr"\g<1>{datetime.utcnow().date().isoformat()}",
                 f.read(),
                 flags=re.MULTILINE,
@@ -74,8 +75,9 @@ class Releaser:
     def _update_changelog_link(self):
         with open("CHANGELOG.md", "r+") as f:
             base = "https://github.com/orlnub123/django-class-settings/releases"
+            escaped_version = re.escape(self.release_version)
             content = re.sub(
-                fr"^([ \t]*\[{re.escape(self.release_version)}\]:[ \t]*).+",
+                fr"^([ \t]*\[{escaped_version}\]:[ \t]*).+",
                 fr"\1{base}/tag/{self.release_version}",
                 f.read(),
                 flags=re.MULTILINE,
