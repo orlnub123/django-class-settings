@@ -1,0 +1,18 @@
+repos:
+    - repo: local
+      hooks:
+          - id: format
+            name: format
+            entry: poetry run invoke format
+            language: system
+            pass_filenames: false
+          - id: lint
+            name: lint
+            entry: poetry run invoke lint
+            language: system
+            pass_filenames: false
+          - id: test
+            name: test
+            entry: poetry run invoke test
+            language: system
+            pass_filenames: false
