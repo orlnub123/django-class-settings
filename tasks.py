@@ -177,8 +177,11 @@ def release(c, publish=False, bump=""):
     c.run("git checkout master")
     releaser.update_changelog()
     c.run(f"git commit -am 'Prepare for {releaser.release_version} release'")
-
     c.run(f"git checkout {current_branch}")
+    if current_branch != "master":
+        commit = c.run("git rev-parse master").stdout.strip()
+        c.run(f"invoke backport {commit}")
+
     releaser.update_version()
     if current_branch == "master":
         c.run(f"git commit -am 'Release {releaser.release_version}'")
@@ -222,6 +225,9 @@ def bump(c, version):
     bumper.update_changelog()
     c.run(f"git commit -am 'Add stub for {bumper.release_version}'")
     c.run(f"git checkout {current_branch}")
+    if current_branch != "master":
+        commit = c.run("git rev-parse master").stdout.strip()
+        c.run(f"invoke backport {commit}")
 
 
 @task
