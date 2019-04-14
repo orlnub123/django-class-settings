@@ -31,7 +31,7 @@ django = "*"
 python-dotenv = ">=0.7"
 
 [tool.poetry.dev-dependencies]
-black = {version = "^18.9b", python = "^3.6"}
+black = {version = "^19.3b", python = "^3.6"}
 flake8 = "^3.7"
 flake8-bugbear = {version = "^18.8", python = "^3.5"}
 invoke = "^1.2"
