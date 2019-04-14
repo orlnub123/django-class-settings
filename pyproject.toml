@@ -38,6 +38,7 @@ invoke = "^1.2"
 isort = {version = "^4.3.5", extras = ["pyproject"]}
 pre-commit = "^1.15"
 pytest = "^4.3"
+tox = "^3.8"
 
 [tool.isort]
 multi_line_output = 3

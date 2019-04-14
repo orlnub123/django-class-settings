@@ -150,8 +150,11 @@ def lint(c):
 
 
 @task
-def test(c):
-    c.run("pytest .", pty=True)
+def test(c, all=False):
+    if all:
+        c.run("tox -p auto .", pty=True)
+    else:
+        c.run("pytest .", pty=True)
 
 
 @task
