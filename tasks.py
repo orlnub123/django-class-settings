@@ -152,9 +152,11 @@ def lint(c):
 @task
 def test(c, all=False):
     if all:
-        c.run("tox -p auto .", pty=True)
+        c.run("coverage erase")
+        c.run("tox -p auto -- --cov --cov-report= --cov-append .", pty=True)
+        c.run("coverage report")
     else:
-        c.run("pytest .", pty=True)
+        c.run("pytest --cov --no-cov-on-fail .", pty=True)
 
 
 @task

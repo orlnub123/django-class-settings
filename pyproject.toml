@@ -32,12 +32,14 @@ python-dotenv = ">=0.7"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^19.3b", python = "^3.6"}
+coverage = "^4.5"
 flake8 = "^3.7"
 flake8-bugbear = {version = "^18.8", python = "^3.5"}
 invoke = "^1.2"
 isort = {version = "^4.3.5", extras = ["pyproject"]}
 pre-commit = "^1.15"
 pytest = "^4.3"
+pytest-cov = "^2.6"
 tox = "^3.8"
 
 [tool.isort]

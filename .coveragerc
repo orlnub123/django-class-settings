@@ -1,0 +1,12 @@
+[run]
+branch = true
+include = */class_settings/*
+parallel = true
+
+[paths]
+source =
+    class_settings/
+    */class_settings/
+
+[report]
+show_missing = true
