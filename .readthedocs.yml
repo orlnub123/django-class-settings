@@ -2,7 +2,7 @@ version: 2
 
 python:
     install:
-        - path: docs/
+      - path: docs/
 
 mkdocs:
     configuration: docs/mkdocs.yml
