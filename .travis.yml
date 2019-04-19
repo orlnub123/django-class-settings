@@ -1,0 +1,26 @@
+dist: xenial
+language: python
+
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8-dev"
+
+jobs:
+    fast_finish: true
+    include:
+      - stage: lint
+        python: "3.7"
+        script: poetry run invoke lint
+    allow_failures:
+      - python: "3.8-dev"
+
+stages:
+  - lint
+  - test
+
+before_install: pip install poetry
+install: poetry install
+script: poetry run invoke test --all
