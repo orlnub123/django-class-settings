@@ -23,4 +23,5 @@ stages:
 
 before_install: pip install poetry
 install: poetry install
-script: poetry run invoke test --all
+script: poetry run tox -- --cov --cov-report= .
+after_success: poetry run coverage report
