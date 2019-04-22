@@ -34,7 +34,7 @@ python-dotenv = ">=0.7"
 black = {version = "^19.3b", python = "^3.6"}
 coverage = "^4.5"
 flake8 = "^3.7"
-flake8-bugbear = {version = "^18.8", python = "^3.5"}
+flake8-bugbear = {version = "^19.3", python = "^3.5"}
 invoke = "^1.2"
 isort = {version = "^4.3.5", extras = ["pyproject"]}
 pre-commit = "^1.15"
