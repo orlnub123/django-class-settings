@@ -41,7 +41,7 @@ class SettingsMeta(type):
                     for feature in __future__.all_feature_names
                 )
                 code = compile(
-                    ast.Module(body=[node]),
+                    ast.Module(body=[node], type_ignores=[]),
                     filename="<meta>",
                     mode="exec",
                     flags=frame.f_code.co_flags & cf_mask,
