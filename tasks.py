@@ -144,8 +144,12 @@ def format(c):
 
 @task
 def lint(c):
-    commands = ["flake8 .", "isort -rc -c -q .", "black --check -q ."]
-    if any(c.run(command, warn=True).failed for command in commands):
+    results = [
+        c.run("flake8 .", warn=True),
+        c.run("isort -rc -c -q .", warn=True),
+        c.run("black --check -q .", warn=True),
+    ]
+    if any(result.failed for result in results):
         sys.exit(1)
 
 
