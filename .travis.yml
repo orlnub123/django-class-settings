@@ -16,9 +16,8 @@ jobs:
           - pyenv install -s 3.4.9
           - pyenv install -s 3.5.7
           - pyenv install -s 3.6.8
-          - pyenv install -s 3.7.3
           - pyenv install -s 3.8-dev
-          - pyenv local 3.4.9 3.5.7 3.6.8 3.7.3 3.8-dev
+          - pyenv local 3.7.3 3.4.9 3.5.7 3.6.8 3.8-dev
         script: poetry run invoke test --all
         after_success: poetry run coverage report
 
