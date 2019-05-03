@@ -1,10 +1,9 @@
 dist: xenial
-language: python
-python: "3.7"
+language: minimal
 
 cache:
-    pip: true
     directories:
+      - $HOME/.cache/pip
       - $HOME/.cache/pypoetry
       - $HOME/.ccache
 
@@ -14,14 +13,6 @@ jobs:
         script: poetry run invoke lint
       - stage: test
         before_script:
-          # Install pyenv
-          - git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-          - git clone https://github.com/pyenv/pyenv-ccache.git ~/.pyenv/plugins/pyenv-ccache
-          - export PYENV_ROOT="$HOME/.pyenv"
-          - export PATH="$PYENV_ROOT/bin:$PATH"
-          - eval "$(pyenv init -)"
-          - pyenv --version
-          # Install Python versions
           - pyenv install -s 3.4.9
           - pyenv install -s 3.5.7
           - pyenv install -s 3.6.8
@@ -31,5 +22,18 @@ jobs:
         script: poetry run invoke test --all
         after_success: poetry run coverage report
 
-before_install: pip install poetry
-install: poetry install
+before_install:
+  - git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+  - git clone https://github.com/pyenv/pyenv-ccache.git ~/.pyenv/plugins/pyenv-ccache
+  - export PYENV_ROOT="$HOME/.pyenv"
+  - export PATH="$PYENV_ROOT/bin:$PATH"
+  - eval "$(pyenv init -)"
+  - pyenv --version
+install:
+  - pyenv install -s 3.7.3
+  - pyenv local 3.7.3
+  - python --version
+  - pip --version
+  - pip install --user poetry
+  - poetry --version
+  - poetry install
