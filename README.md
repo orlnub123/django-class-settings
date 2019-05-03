@@ -72,7 +72,7 @@ pip install django-class-settings
 ### Requirements
 
 - Django 1.11+
-- Python 3.4+
+- Python 3.5+
 
 ## Resources
 

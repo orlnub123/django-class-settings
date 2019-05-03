@@ -13,7 +13,7 @@ accomplished using pip:
 pip install django-class-settings
 ```
 
-Keep in mind that only Django 1.11+ and Python 3.4+ are supported.
+Keep in mind that only Django 1.11+ and Python 3.5+ are supported.
 
 ## Starting a Project
 

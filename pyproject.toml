@@ -26,7 +26,7 @@ classifiers = [
 packages = [{include = "class_settings"}]
 
 [tool.poetry.dependencies]
-python = "^3.4"
+python = "^3.5"
 django = "*"
 python-dotenv = ">=0.7"
 
