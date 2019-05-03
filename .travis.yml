@@ -6,6 +6,7 @@ cache:
       - $HOME/.cache/pip
       - $HOME/.cache/pypoetry
       - $HOME/.ccache
+      - .tox
 
 jobs:
     include:
