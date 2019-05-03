@@ -6,6 +6,7 @@ cache:
     pip: true
     directories:
       - $HOME/.cache/pypoetry
+      - $HOME/.ccache
 
 jobs:
     include:
@@ -13,6 +14,14 @@ jobs:
         script: poetry run invoke lint
       - stage: test
         before_script:
+          # Install pyenv
+          - git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+          - git clone https://github.com/pyenv/pyenv-ccache.git ~/.pyenv/plugins/pyenv-ccache
+          - export PYENV_ROOT="$HOME/.pyenv"
+          - export PATH="$PYENV_ROOT/bin:$PATH"
+          - eval "$(pyenv init -)"
+          - pyenv --version
+          # Install Python versions
           - pyenv install -s 3.4.9
           - pyenv install -s 3.5.7
           - pyenv install -s 3.6.8
