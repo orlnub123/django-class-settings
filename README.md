@@ -4,6 +4,7 @@
 [![django versions][django-version-image]][pypi-url]
 [![python][python-version-image]][pypi-url]
 [![build][travis-image]][travis-url]
+[![coverage][coverage-image]][coverage-url]
 [![license][license-image]][license-url]
 [![code style][code-style-image]][code-style-url]
 
@@ -84,6 +85,8 @@ pip install django-class-settings
 
 [code-style-image]: https://img.shields.io/badge/code%20style-black-000000.svg
 [code-style-url]: https://github.com/ambv/black
+[coverage-image]: https://img.shields.io/codecov/c/gh/orlnub123/django-class-settings.svg
+[coverage-url]: https://codecov.io/gh/orlnub123/django-class-settings
 [django-version-image]: https://img.shields.io/pypi/djversions/django-class-settings.svg
 [license-image]: https://img.shields.io/pypi/l/django-class-settings.svg
 [license-url]: https://github.com/orlnub123/django-class-settings/blob/master/LICENSE

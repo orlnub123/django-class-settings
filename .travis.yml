@@ -19,7 +19,9 @@ jobs:
           - pyenv install -s 3.8-dev
           - pyenv local 3.7.3 3.5.7 3.6.8 3.8-dev
         script: poetry run invoke test --all
-        after_success: poetry run coverage report
+        after_success:
+          - poetry run coverage report
+          - poetry run coverage xml && bash <(curl -s https://codecov.io/bash)
 
 before_install:
   - git clone https://github.com/pyenv/pyenv.git ~/.pyenv
