@@ -1,6 +1,7 @@
 import __future__
 
 import ast
+import copy
 import inspect
 import sys
 import textwrap
@@ -13,6 +14,18 @@ from .options import Options
 
 
 class SettingsDict(dict):
+    def __init__(self, *, options, bases):
+        super().__init__(__options__=options)
+        if options.inject_settings:
+            to_inject = {}
+            for base in reversed(bases):
+                for setting in dir(base):
+                    if not setting.isupper():
+                        continue
+                    value = getattr(base, setting)
+                    to_inject[setting] = copy.deepcopy(value)
+            self.update(to_inject)
+
     def __setitem__(self, key, value):
         if isinstance(value, DeferredEnv):
             try:
@@ -59,7 +72,7 @@ class SettingsMeta(type):
                     break
             else:
                 meta = None
-        return SettingsDict(__options__=Options(meta))
+        return SettingsDict(options=Options(meta), bases=bases)
 
     def __new__(meta, name, bases, namespace):
         options = namespace.pop("__options__", None)

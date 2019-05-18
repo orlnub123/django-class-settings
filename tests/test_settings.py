@@ -111,3 +111,22 @@ class TestSettingsMeta:
         assert settings.DEBUG is True
         assert settings.CUSTOM == 1
         assert not hasattr(settings, "ALLOWED_HOSTS")
+
+    @pytest.mark.parametrize("settings_type", ["instance", "class"])
+    def test_inject_settings(self, settings_type):
+        class BaseTestSettings(Settings):
+            DEBUG = True
+            CUSTOM = 1
+
+        class TestSettings(BaseTestSettings):
+            if CUSTOM:  # noqa
+                ALLOWED_HOSTS += ["www.test.com"]  # noqa
+
+            class Meta:
+                inject_settings = True
+
+        settings = get_settings(TestSettings, type=settings_type)
+
+        assert settings.DEBUG is True
+        assert settings.CUSTOM == 1
+        assert settings.ALLOWED_HOSTS == ["www.test.com"]

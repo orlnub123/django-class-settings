@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added the `optional` env argument that defaults to acting as a noop.
 - Made the default settings accessible directly from the class.
 - Allowed `None` to be passed as a prefix.
+- Added the inject_settings Meta option to inject inherited settings into the
+  class namespace.
 
 ## [0.1.3] - Unreleased
 
