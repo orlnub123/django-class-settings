@@ -85,9 +85,14 @@ class SettingsMeta(type):
 
     def __dir__(cls):
         default_settings = cls._options.default_settings
-        return set(super().__dir__() + dir(default_settings))
+        default_dir = [s for s in dir(default_settings) if s.isupper()]
+        return set(super().__dir__() + default_dir)
 
     def __getattr__(cls, name):
+        if not name.isupper():
+            raise AttributeError(
+                "type object {!r} has no attribute {!r}".format(cls.__name__, name)
+            )
         default_settings = cls._options.default_settings
         return getattr(default_settings, name)
 
@@ -95,9 +100,14 @@ class SettingsMeta(type):
 class Settings(metaclass=SettingsMeta):
     def __dir__(self):
         default_settings = self._options.default_settings
-        return set(super().__dir__() + dir(default_settings))
+        default_dir = [s for s in dir(default_settings) if s.isupper()]
+        return set(super().__dir__() + default_dir)
 
     def __getattr__(self, name):
+        if not name.isupper():
+            raise AttributeError(
+                "{!r} object has no attribute {!r}".format(type(self).__name__, name)
+            )
         default_settings = self._options.default_settings
         return getattr(default_settings, name)
 

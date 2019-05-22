@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Added the inject_settings Meta option to inject inherited settings into the
   class namespace.
 
+### Changed
+
+- Excluded nonupper attributes from default_settings.
+
 ## [0.1.3] - Unreleased
 
 ### Fixed
