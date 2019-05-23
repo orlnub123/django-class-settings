@@ -86,7 +86,7 @@ class SettingsMeta(type):
     def __dir__(cls):
         default_settings = cls._options.default_settings
         default_dir = [s for s in dir(default_settings) if s.isupper()]
-        return set(super().__dir__() + default_dir)
+        return {*super().__dir__(), *default_dir}
 
     def __getattr__(cls, name):
         if not name.isupper():
@@ -101,7 +101,7 @@ class Settings(metaclass=SettingsMeta):
     def __dir__(self):
         default_settings = self._options.default_settings
         default_dir = [s for s in dir(default_settings) if s.isupper()]
-        return set(super().__dir__() + default_dir)
+        return {*super().__dir__(), *default_dir}
 
     def __getattr__(self, name):
         if not name.isupper():

@@ -12,7 +12,7 @@ class SettingsModule(types.ModuleType):
         self.SETTINGS_CLASS = cls
 
     def __dir__(self):
-        return set(super().__dir__() + dir(self.SETTINGS_CLASS))
+        return {*super().__dir__(), *dir(self.SETTINGS_CLASS)}
 
     def __getattr__(self, name):
         return getattr(self.SETTINGS_CLASS, name)
