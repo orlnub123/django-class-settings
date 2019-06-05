@@ -9,6 +9,7 @@ from .settings import Settings
 class SettingsModule(types.ModuleType):
     def __init__(self, name, cls):
         super().__init__(name, cls.__doc__)
+        self.SETTINGS_MODULE = name
         self.SETTINGS_CLASS = cls
 
     def __dir__(self):

@@ -8,15 +8,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from . import parsers
 from .options import Options
-from .utils import normalize_prefix
-
-
-class Missing:
-    def __bool__(self):
-        return False
-
-
-missing = Missing()
+from .utils import missing, normalize_prefix
 
 
 class Env:

@@ -6,13 +6,13 @@ from .settings import Settings
 
 
 def setup():
-    import importlib
     import os
     import sys
     from django.conf import settings
     from django.core.exceptions import ImproperlyConfigured
+    from django.utils.functional import SimpleLazyObject
     from .importers import SettingsImporter
-    from .utils import patch_settings_setup
+    from .settings import LazySettings
 
     global _setup
     if _setup:
@@ -32,20 +32,9 @@ def setup():
             settings_module, settings_class
         )
     sys.meta_path.append(SettingsImporter())
-
-    @patch_settings_setup  # Needed for manage.py --settings support
-    def settings_setup():
-        module_path = os.environ["DJANGO_SETTINGS_MODULE"]
-        module = importlib.import_module(module_path)
-        # Prevent manage.py from swallowing exceptions arising from
-        # settings._setup and make sure to call settings.configure first to
-        # allow it to error on multiple calls.
-        old = settings._wrapped
-        settings.configure(module, SETTINGS_MODULE=module_path)
-        new = settings._wrapped
-        settings._wrapped = old
-        settings._setup()
-        settings._wrapped = new
+    default_settings = LazySettings()
+    settings_module = SimpleLazyObject(lambda: default_settings.SETTINGS_MODULE)
+    settings.configure(default_settings, SETTINGS_MODULE=settings_module)
 
     _setup = True
 
