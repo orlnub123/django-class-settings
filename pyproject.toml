@@ -38,7 +38,7 @@ flake8-bugbear = {version = "^19.3", python = "^3.5"}
 invoke = "^1.2"
 isort = {version = "^4.3.5", extras = ["pyproject"]}
 pre-commit = "^1.15"
-pytest = "^4.3"
+pytest = "^5.0"
 pytest-cov = "^2.6"
 tox = "^3.8"
 
