@@ -16,8 +16,9 @@ import django
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.functional import LazyObject
 
-from .env import DeferredEnv, missing
+from .env import DeferredEnv
 from .options import Options
+from .utils import missing
 
 
 class LazySettings(LazyObject):
