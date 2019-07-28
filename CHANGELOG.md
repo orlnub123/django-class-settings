@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Excluded nonupper attributes from default_settings.
+- Restricted the settings module to the {module}:{class} formatting.
 
 ## [0.1.3] - Unreleased
 

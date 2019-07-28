@@ -39,7 +39,15 @@ class LazySettings(LazyObject):
             )
 
     def _setup(self):
-        module = importlib.import_module(os.environ["DJANGO_SETTINGS_MODULE"])
+        from .importers import SettingsImporter
+
+        settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
+        if SettingsImporter().find_spec(settings_module) is None:
+            raise ImproperlyConfigured(
+                "The settings module {!r} is not formatted as "
+                "'{{module}}:{{class}}'".format(settings_module)
+            )
+        module = importlib.import_module(settings_module)
         # Keep updated against django.conf.Settings.__init__
         self.check_tuple_settings(module)
         self.check_secret_key(module)
