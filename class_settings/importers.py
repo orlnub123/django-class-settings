@@ -21,10 +21,10 @@ class LazySettingsModule(LazyObject):
             try:
                 settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
                 settings_class = os.environ["DJANGO_SETTINGS_CLASS"]
-            except KeyError as error:
+            except KeyError as exc:
                 raise ImproperlyConfigured(
                     "Settings could not be setup. The environment variable "
-                    "{!r} is not defined.".format(error.args[0])
+                    "{!r} is not defined.".format(exc.args[0])
                 ) from None
             os.environ["DJANGO_SETTINGS_MODULE"] = "{}:{}".format(
                 settings_module, settings_class
