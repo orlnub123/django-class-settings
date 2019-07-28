@@ -9,15 +9,14 @@ def setup():
     import sys
     from django.conf import settings
     from django.utils.functional import SimpleLazyObject
-    from .importers import SettingsImporter
-    from .settings import LazySettings
+    from .importers import SettingsImporter, LazySettingsModule
 
     global _setup
     if _setup:
         return
 
     sys.meta_path.append(SettingsImporter())
-    default_settings = LazySettings()
+    default_settings = LazySettingsModule()
     settings_module = SimpleLazyObject(lambda: default_settings.SETTINGS_MODULE)
     settings.configure(default_settings, SETTINGS_MODULE=settings_module)
 
