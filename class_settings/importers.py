@@ -32,7 +32,7 @@ class LazySettingsModule(LazyObject):
 
     def _setup(self):
         settings_module = os.environ["DJANGO_SETTINGS_MODULE"]
-        if SettingsImporter().find_spec(settings_module) is None:
+        if SettingsImporter.find_spec(settings_module) is None:
             raise ImproperlyConfigured(
                 "The settings module {!r} is not formatted as "
                 "'{{module}}:{{class}}'".format(settings_module)
@@ -95,10 +95,10 @@ class LazySettingsModule(LazyObject):
 
 
 class SettingsModule(types.ModuleType):
-    def __init__(self, name, cls):
-        super().__init__(name, cls.__doc__)
+    def __init__(self, name, settings):
+        super().__init__(name, settings.__doc__)
         self.SETTINGS_MODULE = name
-        self.SETTINGS_CLASS = cls
+        self.SETTINGS_CLASS = settings
 
     def __dir__(self):
         return {*super().__dir__(), *dir(self.SETTINGS_CLASS)}
@@ -108,28 +108,31 @@ class SettingsModule(types.ModuleType):
 
 
 class SettingsImporter:
-    def find_spec(self, fullname, path=None, target=None):
+    @classmethod
+    def find_spec(cls, fullname, path=None, target=None):
         if ":" not in fullname.rpartition(".")[2]:
             return None
         settings_module = fullname.rsplit(":", maxsplit=1)[0]
-        return importlib.machinery.ModuleSpec(fullname, self, origin=settings_module)
+        return importlib.machinery.ModuleSpec(fullname, cls, origin=settings_module)
 
-    def create_module(self, spec):
+    @classmethod
+    def create_module(cls, spec):
         settings_module, settings_class = spec.name.rsplit(":", maxsplit=1)
         module = importlib.import_module(settings_module)
         try:
-            cls = getattr(module, settings_class)
+            settings_cls = getattr(module, settings_class)
         except AttributeError:
             raise ImproperlyConfigured(
                 "Module {!r} has no Settings subclass named {!r}".format(
                     settings_module, settings_class
                 )
             ) from None
-        if not (isinstance(cls, type) and issubclass(cls, Settings)):
+        if not (isinstance(settings_cls, type) and issubclass(settings_cls, Settings)):
             raise ImproperlyConfigured(
                 "{!r} is not a Settings subclass".format(settings_class)
             )
-        return SettingsModule(spec.name, cls())
+        return SettingsModule(spec.name, settings_cls())
 
-    def exec_module(self, module):
+    @classmethod
+    def exec_module(cls, module):
         pass

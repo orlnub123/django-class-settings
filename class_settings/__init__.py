@@ -15,7 +15,7 @@ def setup():
     if _setup:
         return
 
-    sys.meta_path.append(SettingsImporter())
+    sys.meta_path.append(SettingsImporter)
     default_settings = LazySettingsModule()
     settings_module = SimpleLazyObject(lambda: default_settings.SETTINGS_MODULE)
     settings.configure(default_settings, SETTINGS_MODULE=settings_module)
