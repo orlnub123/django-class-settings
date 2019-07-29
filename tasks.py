@@ -147,7 +147,7 @@ def lint(c):
     results = [
         c.run("flake8 .", warn=True),
         c.run("isort -rc -c -q .", warn=True),
-        c.run("black --check -q .", warn=True),
+        c.run("black --check .", warn=True),
     ]
     if any(result.failed for result in results):
         sys.exit(1)
