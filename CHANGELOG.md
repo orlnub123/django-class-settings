@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - Ensured Meta is a class.
+- Fixed `Env.prefixed` not resetting the prefix on exceptions.
 
 ## [0.1.2] - 2019-03-17
 

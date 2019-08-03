@@ -83,8 +83,10 @@ class Env:
             self._prefix = prefix
         else:
             self._prefix += prefix
-        yield
-        self._prefix = old_prefix
+        try:
+            yield
+        finally:
+            self._prefix = old_prefix
 
     def parser(self, _func=None, *, name=None, parse_default=False):
         def decorator(func):
