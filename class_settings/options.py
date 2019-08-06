@@ -5,7 +5,7 @@ class Options:
     defaults = {
         "default_settings": global_settings,
         "inject_settings": False,
-        "env_prefix": "django",
+        "env_prefix": "DJANGO_",
     }
 
     def __init__(self, meta):

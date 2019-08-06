@@ -8,7 +8,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from . import parsers
 from .options import Options
-from .utils import missing, normalize_prefix
+from .utils import missing
 
 
 class Env:
@@ -42,7 +42,7 @@ class Env:
         if name is None or optional:
             kwargs = {"name": name, "prefix": prefix, "default": default}
             return DeferredEnv(self, kwargs=kwargs, optional=optional)
-        prefix = normalize_prefix(
+        prefix = (
             prefix
             if prefix is not missing
             else self._prefix
@@ -77,7 +77,6 @@ class Env:
 
     @contextlib.contextmanager
     def prefixed(self, prefix):
-        prefix = normalize_prefix(prefix)
         old_prefix = self._prefix
         if not old_prefix or prefix is None:
             self._prefix = prefix

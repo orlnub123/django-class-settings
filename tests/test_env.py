@@ -40,7 +40,7 @@ class TestEnv:
     )
     def test_env_prefix(self, env):
         class TestSettings(Settings):
-            SECRET_KEY = env("SECRET_KEY", prefix="django")
+            SECRET_KEY = env("SECRET_KEY", prefix="DJANGO_")
             CUSTOM = env("CUSTOM", prefix="CUSTOM")
 
         settings = TestSettings()
@@ -79,7 +79,7 @@ class TestEnv:
     )
     def test_env_prefixed(self, env):
         class TestSettings(Settings):
-            with env.prefixed("django"):
+            with env.prefixed("DJANGO_"):
                 SECRET_KEY = env("SECRET_KEY")
                 with env.prefixed("CUSTOM"):
                     CUSTOM = env("CUSTOM")
@@ -211,7 +211,7 @@ class TestEnvMeta:
             CUSTOM = env("CUSTOM")
 
             class Meta:
-                env_prefix = "custom"
+                env_prefix = "CUSTOM_"
 
         settings = TestSettings()
 

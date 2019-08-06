@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Excluded nonupper attributes from default_settings.
 - Restricted the settings module to the {module}:{class} formatting.
+- Stopped normalizing lowercase prefixes.
 
 ## [0.1.3] - Unreleased
 
