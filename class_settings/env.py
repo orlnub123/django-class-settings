@@ -60,7 +60,7 @@ class Env:
             return os.environ[name]
         except KeyError:
             raise ImproperlyConfigured(
-                "Environment variable {!r} not set".format(name.upper())
+                "Environment variable {!r} not set".format(name)
             ) from None
 
     def __getattr__(self, name):
