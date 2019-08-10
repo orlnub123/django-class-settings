@@ -1,3 +1,4 @@
+# TODO: Move to pyproject.toml once support gets added (#664)
 [run]
 branch = true
 include = */class_settings/*
