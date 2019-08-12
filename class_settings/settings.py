@@ -1,6 +1,7 @@
 import __future__
 
 import ast
+import collections
 import copy
 import inspect
 import sys
@@ -13,9 +14,10 @@ from .env import DeferredEnv
 from .options import Options
 
 
-class SettingsDict(dict):
+class SettingsDict(collections.UserDict):
     def __init__(self, *, options, bases):
-        super().__init__(__options__=options)
+        super().__init__()
+        self.options = options
         if options.inject_settings:
             to_inject = {}
             for base in reversed(bases):
@@ -75,13 +77,10 @@ class SettingsMeta(type):
         return SettingsDict(options=Options(meta), bases=bases)
 
     def __new__(meta, name, bases, namespace):
-        options = namespace.pop("__options__", None)
-        if not isinstance(options, Options):
-            raise AttributeError("__options__ cannot be overwritten")
         if "Meta" in namespace and not isinstance(namespace["Meta"], type):
             raise TypeError("{}.Meta has to be a class".format(name))
-        namespace["_options"] = options
-        return super().__new__(meta, name, bases, namespace)
+        namespace["_options"] = namespace.options
+        return super().__new__(meta, name, bases, namespace.data)
 
     def __dir__(cls):
         default_settings = cls._options.default_settings

@@ -23,10 +23,13 @@ class Env:
                 self.parser(parser)
 
     def __call__(self, name=None, *, prefix=missing, default=missing, optional=False):
+        from .settings import SettingsDict
+
         frame = sys._getframe(1)
         while frame is not None:
-            options = frame.f_locals.get("__options__")
-            if isinstance(options, Options):
+            f_locals = frame.f_locals
+            if isinstance(f_locals, SettingsDict):
+                options = f_locals.options
                 break
             frame = frame.f_back
         else:
