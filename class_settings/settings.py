@@ -12,21 +12,22 @@ from django.core.exceptions import ImproperlyConfigured
 
 from .env import DeferredEnv
 from .options import Options
+from .utils import missing
 
 
 class SettingsDict(collections.UserDict):
     def __init__(self, *, options, bases):
         super().__init__()
         self.options = options
-        if options.inject_settings:
-            to_inject = {}
-            for base in reversed(bases):
-                for setting in dir(base):
-                    if not setting.isupper():
-                        continue
-                    value = getattr(base, setting)
-                    to_inject[setting] = copy.deepcopy(value)
-            self.update(to_inject)
+        self.bases = bases
+
+    def __missing__(self, key):
+        if self.options.inject_settings and key.isupper():
+            for base in self.bases:
+                value = getattr(base, key, missing)
+                if value is not missing:
+                    return copy.deepcopy(value)
+        raise KeyError(key)
 
     def __setitem__(self, key, value):
         if isinstance(value, DeferredEnv):
