@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Restricted the settings module to the {module}:{class} formatting.
 - Stopped normalizing lowercase prefixes.
 
+### Fixed
+- Fixed Settings subclasses not inheriting the correct Meta sometimes.
+
 ## [0.1.3] - Unreleased
 
 ### Fixed

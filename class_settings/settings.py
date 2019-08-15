@@ -16,17 +16,16 @@ from .utils import missing
 
 
 class SettingsDict(collections.UserDict):
-    def __init__(self, *, options, bases):
+    def __init__(self, *, options, bare_cls):
         super().__init__()
         self.options = options
-        self.bases = bases
+        self._bare_cls = bare_cls
 
     def __missing__(self, key):
         if self.options.inject_settings and key.isupper():
-            for base in self.bases:
-                value = getattr(base, key, missing)
-                if value is not missing:
-                    return copy.deepcopy(value)
+            value = getattr(self._bare_cls, key, missing)
+            if value is not missing:
+                return copy.deepcopy(value)
         raise KeyError(key)
 
     def __setitem__(self, key, value):
@@ -41,7 +40,10 @@ class SettingsDict(collections.UserDict):
 
 
 class SettingsMeta(type):
-    def __prepare__(name, bases):
+    @classmethod
+    def __prepare__(meta, name, bases):
+        bare_cls = meta("<Bare>", bases, SettingsDict(options=None, bare_cls=None))
+
         frame = sys._getframe(1)
         filename = inspect.getsourcefile(frame)
         with tokenize.open(filename) as file:
@@ -69,13 +71,10 @@ class SettingsMeta(type):
                 meta = locals["Meta"]
                 break
         else:
-            for base in bases:
-                if hasattr(base, "Meta"):
-                    meta = base.Meta
-                    break
-            else:
-                meta = None
-        return SettingsDict(options=Options(meta), bases=bases)
+            meta = getattr(bare_cls, "Meta", None)
+        options = Options(meta)
+        bare_cls._options = options
+        return SettingsDict(options=options, bare_cls=bare_cls)
 
     def __new__(meta, name, bases, namespace):
         if "Meta" in namespace and not isinstance(namespace["Meta"], type):
