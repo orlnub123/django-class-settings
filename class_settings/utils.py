@@ -15,6 +15,8 @@ def patch_settings_setup(func):
 
 
 def normalize_prefix(prefix):
-    if prefix.islower() and not prefix.endswith("_"):
-        prefix += "_"
-    return prefix.upper()
+    if prefix.islower():
+        if not prefix.endswith("_"):
+            prefix += "_"
+        prefix = prefix.upper()
+    return prefix
