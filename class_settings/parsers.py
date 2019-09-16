@@ -1,10 +1,11 @@
 import builtins
 import functools
+import inspect
 
 
 def _get_parser(parser):
     is_builtin = parser in vars(builtins).values()
-    is_class = isinstance(parser, type)
+    is_class = inspect.isclass(parser)
     if is_builtin and is_class and parser.__name__ in globals():
         parser = globals()[parser.__name__]
     return parser

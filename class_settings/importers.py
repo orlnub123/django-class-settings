@@ -1,4 +1,5 @@
 import importlib.machinery
+import inspect
 import os
 import pathlib
 import time
@@ -127,7 +128,7 @@ class SettingsImporter:
                     settings_module, settings_class
                 )
             ) from None
-        if not (isinstance(settings_cls, type) and issubclass(settings_cls, Settings)):
+        if not (inspect.isclass(settings_cls) and issubclass(settings_cls, Settings)):
             raise ImproperlyConfigured(
                 "{!r} is not a Settings subclass".format(settings_class)
             )

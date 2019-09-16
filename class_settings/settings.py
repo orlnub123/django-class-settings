@@ -77,7 +77,7 @@ class SettingsMeta(type):
         return SettingsDict(options=options, bare_cls=bare_cls)
 
     def __new__(meta, name, bases, namespace):
-        if "Meta" in namespace and not isinstance(namespace["Meta"], type):
+        if "Meta" in namespace and not inspect.isclass(namespace["Meta"]):
             raise TypeError("{}.Meta has to be a class".format(name))
         namespace["_options"] = namespace.options
         return super().__new__(meta, name, bases, namespace.data)
