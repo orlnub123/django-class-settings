@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Stopped normalizing lowercase prefixes.
 
 ### Fixed
+
 - Fixed Settings subclasses not inheriting the correct Meta sometimes.
 
 ## [0.1.3] - 2019-12-25
