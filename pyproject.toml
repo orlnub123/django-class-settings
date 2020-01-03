@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "django-class-settings"
-version = "0.2.0-dev"
+version = "0.2.0"
 description = "Effortless class-based settings for Django."
 license = "MIT"
 authors = ["orlnub123 <orlnub123@gmail.com>"]
