@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [0.3.0] - Unreleased
 
+## [0.2.1] - Unreleased
+
 ## [0.2.0] - 2020-01-03
 
 ### Added
@@ -59,6 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 Initial release.
 
 [0.3.0]: https://github.com/orlnub123/django-class-settings/compare/0.2.0...master
+[0.2.1]: https://github.com/orlnub123/django-class-settings/compare/0.2.0...release/0.2
 [0.2.0]: https://github.com/orlnub123/django-class-settings/releases/tag/0.2.0
 [0.1.3]: https://github.com/orlnub123/django-class-settings/releases/tag/0.1.3
 [0.1.2]: https://github.com/orlnub123/django-class-settings/releases/tag/0.1.2
