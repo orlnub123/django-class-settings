@@ -1,5 +1,5 @@
 __all__ = ["Env", "Settings", "env", "setup"]
-__version__ = "0.2.0"
+__version__ = "0.2.1-dev"
 
 from .env import Env, env
 from .settings import Settings
