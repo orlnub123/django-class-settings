@@ -6,7 +6,7 @@ parallel = true
 
 [paths]
 source =
-    class_settings/
+    src/class_settings/
     */class_settings/
 
 [report]

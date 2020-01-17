@@ -8,7 +8,7 @@ from invoke import task
 
 
 def get_version():
-    with open("class_settings/__init__.py") as f:
+    with open("src/class_settings/__init__.py") as f:
         return re.search(
             r"""^[ \t]*__version__[ \t]*=[ \t]*['"](.*?)['"]""",
             f.read(),
@@ -20,7 +20,7 @@ def update_version(c, version):
     # Update pyproject.toml version
     c.run(f"poetry version {version}", hide="out")
     # Update __version__
-    with open("class_settings/__init__.py", "r+") as f:
+    with open("src/class_settings/__init__.py", "r+") as f:
         content = re.sub(
             r"""^([ \t]*__version__[ \t]*=[ \t]*['"]).*?(['"])""",
             fr"\g<1>{version}\2",
