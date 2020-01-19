@@ -18,7 +18,7 @@ jobs:
           - pyenv install -s 3.6.9
           - pyenv install -s 3.7.6
           - pyenv local 3.8.1 3.7.6 3.5.9 3.6.9
-        script: poetry run invoke test --all
+        script: poetry run invoke test --all --cov --no-cov-report
         after_success:
           - poetry run coverage report
           - poetry run coverage xml && bash <(curl -s https://codecov.io/bash)
