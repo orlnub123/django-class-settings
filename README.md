@@ -3,6 +3,7 @@
 [![pypi][pypi-image]][pypi-url]
 [![django versions][django-version-image]][pypi-url]
 [![python][python-version-image]][pypi-url]
+[![docs][rtfd-image]][rtfd-url]
 [![build][travis-image]][travis-url]
 [![coverage][coverage-image]][coverage-url]
 [![license][license-image]][license-url]
@@ -95,5 +96,7 @@ pip install django-class-settings
 [pypi-image]: https://img.shields.io/pypi/v/django-class-settings.svg
 [pypi-url]: https://pypi.org/project/django-class-settings/
 [python-version-image]: https://img.shields.io/pypi/pyversions/django-class-settings.svg
+[rtfd-image]: https://img.shields.io/readthedocs/django-class-settings.svg
+[rtfd-url]: https://django-class-settings.readthedocs.io/
 [travis-image]: https://img.shields.io/travis/orlnub123/django-class-settings.svg
 [travis-url]: https://travis-ci.org/orlnub123/django-class-settings
