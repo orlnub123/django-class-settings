@@ -11,10 +11,10 @@ authors = ["orlnub123 <orlnub123@gmail.com>"]
 packages = [{include = "plugins"}]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 mkdocs = "^1.0"
-markdown = "^3.0"
-lxml = "^4.3"
+markdown = "^3.1"
+lxml = "^4.4"
 
 [tool.poetry.plugins."mkdocs.plugins"]
 index_generator = "plugins.generators:IndexGeneratorPlugin"
