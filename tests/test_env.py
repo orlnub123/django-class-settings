@@ -61,6 +61,19 @@ class TestEnv:
         assert settings.SECRET_KEY == "test"
         assert settings.CUSTOM == "1"
 
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_SECRET_KEY": "test", "DJANGO_CUSTOM": "1"}], indirect=True
+    )
+    def test_env_deferred_parser(self, env):
+        class TestSettings(Settings):
+            SECRET_KEY = env.str()
+            CUSTOM = env.int()
+
+        settings = TestSettings()
+
+        assert settings.SECRET_KEY == "test"
+        assert settings.CUSTOM == 1
+
     @pytest.mark.parametrize("env", [{"DJANGO_SECRET_KEY": "test"}], indirect=True)
     def test_env_optional(self, env):
         class TestSettings(Settings):
@@ -97,6 +110,19 @@ class TestEnv:
 
         class TestSettings(Settings):
             CUSTOM = env.custom("CUSTOM", custom=True)
+
+        settings = TestSettings()
+
+        assert settings.CUSTOM is True
+
+    @pytest.mark.parametrize("env", [{}], indirect=True)
+    def test_env_parser_default(self, env):
+        @env.parser(parse_default=True)
+        def custom(value, custom=False):
+            return custom and value == "custom"
+
+        class TestSettings(Settings):
+            CUSTOM = env.custom("CUSTOM", default="custom", custom=True)
 
         settings = TestSettings()
 
