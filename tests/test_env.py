@@ -136,6 +136,32 @@ class TestEnvParsers:
         assert settings.LIST == ["test", "abc"]
         assert settings.TUPLE == ("test", "abc")
 
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_LIST": "test:abc", "DJANGO_TUPLE": "test:abc"}], indirect=True
+    )
+    def test_sequence_separator(self, env):
+        class TestSettings(Settings):
+            LIST = env.list("LIST", separator=":")
+            TUPLE = env.tuple("TUPLE", separator=":")
+
+        settings = TestSettings()
+
+        assert settings.LIST == ["test", "abc"]
+        assert settings.TUPLE == ("test", "abc")
+
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_LIST": "1, 2", "DJANGO_TUPLE": "1, 2"}], indirect=True
+    )
+    def test_sequence_subparser(self, env):
+        class TestSettings(Settings):
+            LIST = env.list("LIST", subparser=int)
+            TUPLE = env.tuple("TUPLE", subparser=int)
+
+        settings = TestSettings()
+
+        assert settings.LIST == [1, 2]
+        assert settings.TUPLE == (1, 2)
+
     @pytest.mark.parametrize("env", [{"DJANGO_STR": "test"}], indirect=True)
     def test_text_sequence(self, env):
         class TestSettings(Settings):
@@ -173,16 +199,79 @@ class TestEnvParsers:
         assert settings.SET == {"test", "abc"}
         assert settings.FROZENSET == frozenset({"test", "abc"})
 
-    @pytest.mark.parametrize("env", [{"DJANGO_DICT": "test = abc"}], indirect=True)
+    @pytest.mark.parametrize(
+        "env",
+        [{"DJANGO_SET": "test:abc", "DJANGO_FROZENSET": "test:abc"}],
+        indirect=True,
+    )
+    def test_set_separator(self, env):
+        class TestSettings(Settings):
+            SET = env.set("SET", separator=":")
+            FROZENSET = env.frozenset("FROZENSET", separator=":")
+
+        settings = TestSettings()
+
+        assert settings.SET == {"test", "abc"}
+        assert settings.FROZENSET == frozenset({"test", "abc"})
+
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_SET": "1, 2", "DJANGO_FROZENSET": "1, 2"}], indirect=True
+    )
+    def test_set_subparser(self, env):
+        class TestSettings(Settings):
+            SET = env.set("SET", subparser=int)
+            FROZENSET = env.frozenset("FROZENSET", subparser=int)
+
+        settings = TestSettings()
+
+        assert settings.SET == {1, 2}
+        assert settings.FROZENSET == frozenset({1, 2})
+
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_DICT": "test = abc, test2 = def"}], indirect=True
+    )
     def test_mapping(self, env):
         class TestSettings(Settings):
             DICT = env.dict("DICT")
 
         settings = TestSettings()
 
-        assert settings.DICT == {"test": "abc"}
+        assert settings.DICT == {"test": "abc", "test2": "def"}
 
-    @pytest.mark.parametrize("env", [{"DJANGO_BOOL": "true"}], indirect=True)
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_DICT": "test: abc | test2: def"}], indirect=True
+    )
+    def test_mapping_separator(self, env):
+        class TestSettings(Settings):
+            DICT = env.dict("DICT", separator="|", itemseparator=":")
+
+        settings = TestSettings()
+
+        assert settings.DICT == {"test": "abc", "test2": "def"}
+
+    @pytest.mark.parametrize(
+        "env", [{"DJANGO_DICT": "1 = 1.5, 2 = 2.5"}], indirect=True
+    )
+    def test_mapping_subparser(self, env):
+        class TestSettings(Settings):
+            DICT = env.dict("DICT", keyparser=int, valueparser=float)
+
+        settings = TestSettings()
+
+        assert settings.DICT == {1: 1.5, 2: 2.5}
+
+    @pytest.mark.parametrize(
+        "env",
+        [
+            {"DJANGO_BOOL": "true"},
+            {"DJANGO_BOOL": "t"},
+            {"DJANGO_BOOL": "yes"},
+            {"DJANGO_BOOL": "y"},
+            {"DJANGO_BOOL": "on"},
+            {"DJANGO_BOOL": "1"},
+        ],
+        indirect=True,
+    )
     def test_other(self, env):
         class TestSettings(Settings):
             BOOL = env.bool("BOOL")
@@ -190,6 +279,26 @@ class TestEnvParsers:
         settings = TestSettings()
 
         assert settings.BOOL is True
+
+    @pytest.mark.parametrize(
+        "env",
+        [
+            {"DJANGO_BOOL": "false"},
+            {"DJANGO_BOOL": "f"},
+            {"DJANGO_BOOL": "no"},
+            {"DJANGO_BOOL": "n"},
+            {"DJANGO_BOOL": "off"},
+            {"DJANGO_BOOL": "0"},
+        ],
+        indirect=True,
+    )
+    def test_other2(self, env):
+        class TestSettings(Settings):
+            BOOL = env.bool("BOOL")
+
+        settings = TestSettings()
+
+        assert settings.BOOL is False
 
     @pytest.mark.parametrize("env", [{"DJANGO_JSON": '{"test": "abc"}'}], indirect=True)
     def test_custom(self, env):
